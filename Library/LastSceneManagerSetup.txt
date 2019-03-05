@@ -1,0 +1,5 @@
+sceneSetups:
+- path: C:/Users/rossh/Desktop/In Class Examples/02_InputShootingDemo/Assets/main.unity
+  isLoaded: 1
+  isActive: 1
+  isSubScene: 0

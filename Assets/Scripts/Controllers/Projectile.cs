@@ -39,9 +39,4 @@ public class Projectile : MonoBehaviour
         else
             Destroy(this.gameObject);
     }
-
-    private void Update()
-    {
-        //tf.position += tf.up * velocity * Time.deltaTime;
-    }
 }

@@ -6,55 +6,72 @@ public class CameraSystem : MonoBehaviour {
 
 
 
+    public float mouseX;
+    public float mouseY;
+    public float smoothX;
+    public float smoothY;
+    public float sensitivityX = 5f;
+    public float sensitivityY = 5f;
+    public float clampAngle;
     public GameObject target;
     public GameObject turret;
     public Weapon weapon;
-    private Transform camera;
-    private Quaternion rot;
-    public float xOffset;
-    public float yOffset;
-    public float zOffset;
-    public float turningSpeed = 5f;
+
+    private float rotationX = 0.0f;
+    private float rotationY = 0.0f;
     private float rotateXMin;
     private float rotateXMax;
-    public float minYBarrelConstaint;
-    Vector3 offset;
+    private Transform cam;
+    private Quaternion rot;
+    private Vector3 DistanceToTarget;
+
 
     // Use this for initialization
     void Start () {
-        camera = GetComponent<Transform>();
-
-        //Distance between the camera and the object its looking at
-        offset = target.transform.position - camera.position;
-
+        cam = GetComponent<Transform>();
+        DistanceToTarget = target.transform.position - cam.position;
+        Vector3 rot = cam.localRotation.eulerAngles;
+        rotationY = rot.y;
+        rotationX = rot.x;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
-    //0, 1.2, -1.5S
-    //20, 0, 0
-	
-	// Update is called once per frame
-	void LateUpdate () {
 
-      //  Debug.Log("MouseX: " + Input.mousePosition.x);
-      //  Debug.Log("MouseY: " + Input.mousePosition.y);
-      
+    private void Update()
+    {
+        //Setup rotation of sticks
+        mouseX = Input.GetAxis("Mouse X");
+        mouseY = Input.GetAxis("Mouse Y");
 
-        float vertical = Input.GetAxis("Mouse Y") * turningSpeed;
+        rotationY += mouseX * sensitivityY * Time.deltaTime;
+        rotationX += mouseY * sensitivityX * Time.deltaTime;
 
-        //Get the y rotation of the object
-        float desiredAngleY = turret.transform.eulerAngles.y;
-        float desiredAngleX = weapon.transform.eulerAngles.x;
+        rotationX = Mathf.Clamp(rotationX, -clampAngle, clampAngle);
+
+        Quaternion localRotation = Quaternion.Euler(rotationX, rotationY, 0.0f);
+        cam.rotation = localRotation;
+    }
+
+    // Update is called once per frame
+    void LateUpdate () {
+
+        //Get the Y rotation of the object
+        //Get the X rotation of the object
+        float turretEulerAngleY = turret.transform.eulerAngles.y;
+        float turretEulerAngleX = turret.transform.eulerAngles.x;
+        float weaponEulerAngleX = weapon.transform.eulerAngles.x;
         
-        Quaternion rotationY = Quaternion.Euler(0, desiredAngleY, 0);
-        Quaternion rotationX = Quaternion.Euler(desiredAngleX, 0, 0);
-        float offsetX = camera.transform.localRotation.x + weapon.transform.localRotation.x;
-        Vector3 lookUp = weapon.transform.position + (rotationX * offset);
+        Quaternion turretRotationY = Quaternion.Euler(0, turretEulerAngleY, 0);
+        Quaternion turretRotationX = Quaternion.Euler(turretEulerAngleX, 0, 0);
 
-        //Keep the camera the same distance away from the object when it moves4
-        camera.position = turret.transform.position - (rotationY * offset);
+        //Keep the camera the same distance away from the object when it moves
+        // - (turretRotation * DistanceToTarget) makes the cameras rotation and
+        //Distance stay the same in relation to the weapons own rotation and distance
+        cam.position = weapon.transform.position - (turretRotationY * DistanceToTarget);
+        cam.Rotate(weaponEulerAngleX, turretEulerAngleY, 0);
 
         //Rotate the camera every frame so it keeps looking at the target
-        //camera.LookAt(weapon.transform);
-        camera.transform.eulerAngles = target.transform.eulerAngles;
+        cam.eulerAngles = target.transform.eulerAngles;
         //camera.LookAt(weapon.transform);
     }
 }

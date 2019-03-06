@@ -8,17 +8,19 @@ public class WeaponData : MonoBehaviour
     //Weapon properties
     [Header("Weapon Properties")]
     public float fireRate;
-    private float nextShot;
     [Tooltip("Automatically gets the gameObject with the weapon script attached")]
     public Weapon weapon;
+    public GameObject turret;
+    private float nextShot;
     private TankData tank;
 
     [Header("Projectile properties")]
     public int velocity;
     public int damage;
+    public float zOffset = 0.5f;
+    public float yOffset;
     public float despawnTime;
     public Projectile projectilePrefab;
-    //public Projectile projectilePrefab2;
 
     // Use this for initialization
     void Start()
@@ -32,12 +34,11 @@ public class WeaponData : MonoBehaviour
     {
         if(Time.time > nextShot)
         {
-            //Set the rotation 
-            //Quaternion rot = Quaternion.AngleAxis(90, Vector3.right);
             //Create the projectile to be fired
-            Quaternion tr = tank.transform.rotation;
-            Projectile projectile = Instantiate<Projectile>(projectilePrefab, weapon.tf.position + weapon.tf.forward * .5f, tr);
-            projectile.transform.Rotate(90, 0, 0);
+            Projectile projectile = Instantiate<Projectile>(projectilePrefab, weapon.transform.position + (weapon.transform.forward * yOffset) + (weapon.transform.up * zOffset), Quaternion.identity);
+
+            //Set the projectiles information
+            projectile.transform.Rotate(90, weapon.tf.eulerAngles.y, 0);
             projectile.despawnTime = despawnTime;
             projectile.velocity = velocity;
             projectile.damage = damage;

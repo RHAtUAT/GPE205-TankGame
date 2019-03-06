@@ -25,6 +25,7 @@ public class CameraCollision : MonoBehaviour
         RaycastHit hit;
 
         Debug.DrawRay(transform.parent.position, desiredCameraPosition, Color.green);
+        Debug.Log("Im alive");
         if(Physics.Linecast(transform.parent.position, desiredCameraPosition, out hit))
         {
             distance = Mathf.Clamp((hit.distance * 0.9f), minDistance, maxDistance);
@@ -33,6 +34,6 @@ public class CameraCollision : MonoBehaviour
         {
             distance = maxDistance;
         }
-        transform.localPosition = Vector3.Lerp(transform.localPosition, dollyDirAdjusted * distance, Time.deltaTime * smooth);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, dollyDir * distance, Time.deltaTime * smooth);
     }
 }

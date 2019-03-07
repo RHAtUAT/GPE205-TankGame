@@ -19,9 +19,8 @@ public class TankData : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        motor = GetComponent<TankMotor>();
+        motor = GetComponentInChildren<TankMotor>();
         weaponData = GetComponent<WeaponData>();
-        Debug.Log("WD:" + weaponData);
     }
 }
 

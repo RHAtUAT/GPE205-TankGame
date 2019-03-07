@@ -35,10 +35,9 @@ public class WeaponData : MonoBehaviour
         if(Time.time > nextShot)
         {
             //Create the projectile to be fired
-            Projectile projectile = Instantiate<Projectile>(projectilePrefab, weapon.transform.position + (weapon.transform.forward * yOffset) + (weapon.transform.up * zOffset), Quaternion.identity);
+            Projectile projectile = Instantiate<Projectile>(projectilePrefab, weapon.transform.position + (weapon.transform.forward * yOffset) + (weapon.transform.up * zOffset), Quaternion.Euler(weapon.transform.rotation.eulerAngles));
 
             //Set the projectiles information
-            projectile.transform.Rotate(90, weapon.tf.eulerAngles.y, 0);
             projectile.despawnTime = despawnTime;
             projectile.velocity = velocity;
             projectile.damage = damage;

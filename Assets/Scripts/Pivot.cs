@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class Pivot : MonoBehaviour
 {
-    public float turningSpeed;
     public GameObject turret;
     private Transform tf;
     public Quaternion startRotation;
     public float maxVerticalRotation = 40;
     public float minVerticalRotation = -10;
+    public float mouseX;
+    public float mouseY;
+    public float sensitivityX = 1f;
+    public float sensitivityY = 1f;
+    private float rotationX = 0.0f;
+    private float rotationY = 0.0f;
     private float totalVerticalRotation;
     Vector3 offset;
 
@@ -18,23 +23,25 @@ public class Pivot : MonoBehaviour
     {
         totalVerticalRotation = 0;
         tf = GetComponent<Transform>();
-        //offset = turret.transform.position - camera.position;
-
     }
 
     void Update()
     {
-        float horizontal = Input.GetAxis("Mouse X") * turningSpeed;
-        float vertical = Input.GetAxis("Mouse Y") * turningSpeed;
+        mouseX = Input.GetAxis("Mouse X");
+        mouseY = Input.GetAxis("Mouse Y");
 
-        //Get the y rotation of the object
-        float desiredAngle = turret.transform.eulerAngles.y;
-        Quaternion rotation = Quaternion.Euler(0, desiredAngle, 0);
+        rotationY += mouseX * sensitivityY;
+        rotationX += mouseY * sensitivityX;
 
-        turret.transform.Rotate(0, horizontal, 0);
+
+
+        Debug.Log("localRotation" + turret.transform.localRotation);
+        Debug.Log("Rotation" + turret.transform.rotation);
+        Debug.Log("ParentRotation" + transform.parent.rotation);
+        turret.transform.Rotate(0, mouseX, 0);
 
         //Sets the min and max angles the barrel can move up and down
-        float newRot = Mathf.Clamp(totalVerticalRotation + vertical, -maxVerticalRotation, -minVerticalRotation);
+        float newRot = Mathf.Clamp(totalVerticalRotation + mouseY, -maxVerticalRotation, -minVerticalRotation);
 
         //Get new postition after the barrel has moved
         float delta = newRot - totalVerticalRotation;

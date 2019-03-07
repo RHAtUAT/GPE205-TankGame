@@ -10,7 +10,7 @@ public class TankMotor : MonoBehaviour {
     // Use this for initialization
     void Start () {
         tf = GetComponent<Transform>();
-        cc = GetComponent<CharacterController>();
+        cc = GetComponentInParent<CharacterController>();
     }
 	
 	// Update is called once per frame

@@ -15,16 +15,19 @@ public class Follow : MonoBehaviour
     public float mouseY;
     public float smoothX;
     public float smoothY;
-    private float rotationY = 0.0f;
-    private float rotationX = 0.0f;
-    Vector3 cameraPosition;
     public GameObject target;
     public GameObject player;
-    public GameObject camera;
+    public GameObject cam;
 
-    // Start is called before the first frame update
+    private float rotationY = 0.0f;
+    private float rotationX = 0.0f;
+    private Vector3 cameraPosition;
+    private Transform tf;
+
+    //Start is called before the first frame update
     void Start()
     {
+        tf = GetComponent<Transform>();
         Vector3 rot = transform.localRotation.eulerAngles;
         rotationY = rot.y;
         rotationX = rot.x;
@@ -33,7 +36,7 @@ public class Follow : MonoBehaviour
 
     }
 
-    // Update is called once per frame
+    //Update is called once per frame
     void Update()
     {
 
@@ -47,14 +50,13 @@ public class Follow : MonoBehaviour
         rotationX = Mathf.Clamp(rotationX, -clampAngle, clampAngle);
 
         Quaternion localRotation = Quaternion.Euler(rotationX, rotationY, 0.0f);
-        transform.rotation = localRotation;
+        tf.rotation = localRotation;
 
     }
 
     private void LateUpdate()
     {
         CameraUpdate();
-
     }
 
     void CameraUpdate()
@@ -64,7 +66,7 @@ public class Follow : MonoBehaviour
 
         //Move towards the target
         float step = velocity * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, targetTf.position, step);
+        tf.position = Vector3.MoveTowards(tf.position, targetTf.position, step);
     }
 
 }

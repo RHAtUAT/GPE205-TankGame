@@ -10,10 +10,13 @@ public class CameraCollision : MonoBehaviour
     Vector3 dollyDir;
     public Vector3 dollyDirAdjusted;
     public float distance;
+    public GameObject target;
+    private Transform targetTf;
 
 
     private void Awake()
     {
+        targetTf = target.GetComponent<Transform>();
         dollyDir = transform.localPosition.normalized;
         distance = transform.localPosition.magnitude;
     }
@@ -21,12 +24,12 @@ public class CameraCollision : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 desiredCameraPosition = transform.parent.TransformPoint(dollyDir * maxDistance);
+        Vector3 desiredCameraPosition = target.transform.TransformPoint(dollyDir * maxDistance);
         RaycastHit hit;
 
-        Debug.DrawRay(transform.parent.position, desiredCameraPosition, Color.green);
+        Debug.DrawRay(target.transform.localPosition, desiredCameraPosition, Color.green);
         Debug.Log("Im alive");
-        if(Physics.Linecast(transform.parent.position, desiredCameraPosition, out hit))
+        if (Physics.Linecast(targetTf.position, desiredCameraPosition, out hit))
         {
             distance = Mathf.Clamp((hit.distance * 0.9f), minDistance, maxDistance);
         }

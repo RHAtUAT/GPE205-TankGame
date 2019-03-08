@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 7324310063559398537}
   - component: {fileID: 2066127315574458207}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

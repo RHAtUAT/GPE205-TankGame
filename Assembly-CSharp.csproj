@@ -64,20 +64,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Objects\RoomTileTemplate\Scripts\Room.cs" />
-    <Compile Include="Assets\Scripts\Controllers\Camera\CameraCollision.cs" />
-    <Compile Include="Assets\Scripts\Controllers\Camera\Follow.cs" />
-    <Compile Include="Assets\Scripts\Controllers\CameraSystem.cs" />
-    <Compile Include="Assets\Scripts\Controllers\Damagable.cs" />
-    <Compile Include="Assets\Scripts\Controllers\Damage.cs" />
-    <Compile Include="Assets\Scripts\Controllers\Health.cs" />
-    <Compile Include="Assets\Scripts\Controllers\InputController.cs" />
-    <Compile Include="Assets\Scripts\Controllers\Projectile.cs" />
-    <Compile Include="Assets\Scripts\Controllers\TankData.cs" />
-    <Compile Include="Assets\Scripts\Controllers\TankMotor.cs" />
-    <Compile Include="Assets\Scripts\Controllers\Weapon.cs" />
-    <Compile Include="Assets\Scripts\Controllers\WeaponData.cs" />
+    <Compile Include="Assets\Scripts\AIController.cs" />
+    <Compile Include="Assets\Scripts\CameraCollision.cs" />
+    <Compile Include="Assets\Scripts\CameraSystem.cs" />
+    <Compile Include="Assets\Scripts\Follow.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Health.cs" />
+    <Compile Include="Assets\Scripts\InputController.cs" />
     <Compile Include="Assets\Scripts\Pivot.cs" />
+    <Compile Include="Assets\Scripts\Projectile.cs" />
+    <Compile Include="Assets\Scripts\TankData.cs" />
+    <Compile Include="Assets\Scripts\TankMotor.cs" />
+    <Compile Include="Assets\Scripts\Weapon.cs" />
+    <Compile Include="Assets\Scripts\WeaponData.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/rossh/Documents/GitHub/GPE205-TankGame/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

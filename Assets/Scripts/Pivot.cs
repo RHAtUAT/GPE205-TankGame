@@ -33,17 +33,12 @@ public class Pivot : MonoBehaviour
         rotationY += mouseX * sensitivityY;
         rotationX += mouseY * sensitivityX;
 
-
-
-        Debug.Log("localRotation" + turret.transform.localRotation);
-        Debug.Log("Rotation" + turret.transform.rotation);
-        Debug.Log("ParentRotation" + transform.parent.rotation);
         turret.transform.Rotate(0, mouseX, 0);
 
-        //Sets the min and max angles the barrel can move up and down
+        //Sets the min and max angles the weapon can move up and down
         float newRot = Mathf.Clamp(totalVerticalRotation + mouseY, -maxVerticalRotation, -minVerticalRotation);
 
-        //Get new postition after the barrel has moved
+        //Get new postition after the weapon has moved
         float delta = newRot - totalVerticalRotation;
         totalVerticalRotation = newRot;
 

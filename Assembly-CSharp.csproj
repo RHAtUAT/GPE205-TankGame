@@ -67,12 +67,14 @@
     <Compile Include="Assets\Scripts\AIController.cs" />
     <Compile Include="Assets\Scripts\CameraCollision.cs" />
     <Compile Include="Assets\Scripts\CameraSystem.cs" />
+    <Compile Include="Assets\Scripts\Chase.cs" />
     <Compile Include="Assets\Scripts\Follow.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Health.cs" />
     <Compile Include="Assets\Scripts\InputController.cs" />
     <Compile Include="Assets\Scripts\Pivot.cs" />
     <Compile Include="Assets\Scripts\Projectile.cs" />
+    <Compile Include="Assets\Scripts\Sight.cs" />
     <Compile Include="Assets\Scripts\TankData.cs" />
     <Compile Include="Assets\Scripts\TankMotor.cs" />
     <Compile Include="Assets\Scripts\Weapon.cs" />

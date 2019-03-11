@@ -43,6 +43,7 @@ public class InputController : MonoBehaviour
         {
             pawn.motor.Rotate(-pawn.turnSpeed);
         }
+        //if()
     }
 
     private void FixedUpdate()

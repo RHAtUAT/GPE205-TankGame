@@ -9,12 +9,6 @@ public class Pivot : MonoBehaviour
     public Quaternion startRotation;
     public float maxVerticalRotation = 40;
     public float minVerticalRotation = -10;
-    public float mouseX;
-    public float mouseY;
-    public float sensitivityX = 1f;
-    public float sensitivityY = 1f;
-    private float rotationX = 0.0f;
-    private float rotationY = 0.0f;
     private float totalVerticalRotation;
     Vector3 offset;
 
@@ -27,16 +21,18 @@ public class Pivot : MonoBehaviour
 
     void Update()
     {
-        mouseX = Input.GetAxis("Mouse X");
-        mouseY = Input.GetAxis("Mouse Y");
 
-        rotationY += mouseX * sensitivityY;
-        rotationX += mouseY * sensitivityX;
+    }
 
-        turret.transform.Rotate(0, mouseX, 0);
+    public void RotateTurret(float inputX, float inputY)
+    {
+
+
+
+        turret.transform.Rotate(0, inputX, 0);
 
         //Sets the min and max angles the weapon can move up and down
-        float newRot = Mathf.Clamp(totalVerticalRotation + mouseY, -maxVerticalRotation, -minVerticalRotation);
+        float newRot = Mathf.Clamp(totalVerticalRotation + inputY, -maxVerticalRotation, -minVerticalRotation);
 
         //Get new postition after the weapon has moved
         float delta = newRot - totalVerticalRotation;

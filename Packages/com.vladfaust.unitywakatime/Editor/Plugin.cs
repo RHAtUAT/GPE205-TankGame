@@ -96,7 +96,7 @@ namespace WakaTime {
     }
 
     static void SendHeartbeat(bool fromSave = false) {
-      if (_debug) Debug.Log("<WakaTime> Sending heartbeat...");
+      //if (_debug) Debug.Log("<WakaTime> Sending heartbeat...");
 
       var currentScene = EditorSceneManager.GetActiveScene().path;
       var file = currentScene != string.Empty ? Path.Combine(Application.dataPath, currentScene.Substring("Assets/".Length)) : string.Empty;
@@ -130,7 +130,7 @@ namespace WakaTime {
             Debug.LogError("<WakaTime> Failed to send heartbeat to WakaTime!\n" + response.error);
           }
         } else {
-          if (_debug) Debug.Log("<WakaTime> Sent heartbeat!");
+          //if (_debug) Debug.Log("<WakaTime> Sent heartbeat!");
           _lastHeartbeat = response.data;
         }
       };

@@ -5,25 +5,36 @@ using UnityEngine;
 public class InputController : MonoBehaviour
 {
 
-    //public float mouseX;
-    //public float mouseY;
-    //public float sensitivityX = 1f;
-    //public float sensitivityY = 1f;
-    //private float rotationX = 0.0f;
-    //private float rotationY = 0.0f;
+    public float mouseX;
+    public float mouseY;
+    public float sensitivityX = 1f;
+    public float sensitivityY = 1f;
+    private float rotationX;
+    private float rotationY;
+
 
     public TankData pawn;
-	// Use this for initialization
-	void Start()
+
+    // Use this for initialization
+    void Start()
 	{
-		GameManager.instance.player = this.gameObject;
-	}
+		GameManager.instance.player = this;
+        Debug.Log("Player: " + GameManager.instance.player.pawn);
+        Debug.Log("Motor: " + pawn.motor);
+        
+    }
  
 	// Update is called once per frame
 	void Update()
     {
+        mouseX = Input.GetAxis("Mouse X");
+        mouseY = Input.GetAxis("Mouse Y");
+
+        rotationX = mouseX * sensitivityX;
+        rotationY = mouseY * sensitivityY;
+
         //Move Forwards
-		if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
             pawn.motor.Move(pawn.moveSpeed);
         }
@@ -43,16 +54,18 @@ public class InputController : MonoBehaviour
         {
             pawn.motor.Rotate(-pawn.turnSpeed);
         }
-        //if()
-    }
-
-    private void FixedUpdate()
-    {
         //Shoot on left mouse click
         if (Input.GetMouseButtonDown(0))
         {
             pawn.weaponData.Fire();
         }
+
+        //Move the turret and barrel by the mouse postion
+        pawn.pivot.RotateTurret(rotationX, rotationY);
+    }
+
+    private void FixedUpdate()
+    {
 
     }
 

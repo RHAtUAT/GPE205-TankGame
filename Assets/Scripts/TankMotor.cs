@@ -5,11 +5,12 @@ using UnityEngine;
 public class TankMotor : MonoBehaviour {
 
     private CharacterController cc;
-    private Transform tf;
+    [HideInInspector] public Transform tf;
     private TankData tank;
 
     // Use this for initialization
     void Start () {
+
         tank = GetComponentInParent<TankData>();
         tf = GetComponent<Transform>();
         cc = GetComponentInParent<CharacterController>();
@@ -35,10 +36,10 @@ public class TankMotor : MonoBehaviour {
         Vector3 rotateVector = Vector3.up; 
         rotateVector *= rotatonSpeed;
 
-        tf.Rotate( rotateVector, Space.Self);
+        tf.Rotate(rotateVector);
     }
 
-    public bool RotateTowards(Vector3 target, float speed)
+    public bool RotateTowards(Vector3 target)
     {
         //The difference/distance between this gameeObjects postion and the targets position
         Vector3 vectorToTarget = target - tf.position;

@@ -10,15 +10,7 @@ public class GameManager : MonoBehaviour
 
     //Player
     [Header("Player")]
-    public GameObject player;
-    public float playerSpeed;
-    public float playerJumpVelocity;
-    public int playerJumpAmount;
-    public int playerJumpsRemaining;
-    public float raycastOffset;
-    public bool isGrounded;
-    public int lives;
-    public int livesLeft;
+    public InputController player;
 
     //Camera
     [Header("Camera")]

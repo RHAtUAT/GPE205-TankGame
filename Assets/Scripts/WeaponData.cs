@@ -20,7 +20,7 @@ public class WeaponData : MonoBehaviour
     public int damage;
     public float zOffset = 0.5f;
     public float yOffset;
-    public float despawnTime;
+    public float despawnTime = 3.0f;
     public Projectile projectilePrefab;
 
     // Use this for initialization

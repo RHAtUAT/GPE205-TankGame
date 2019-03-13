@@ -313,7 +313,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6733483806515461437}
   - component: {fileID: 3409432108153172698}
-  - component: {fileID: 7182395427365737705}
   - component: {fileID: 7878015978449458106}
   - component: {fileID: 7873240851618858664}
   - component: {fileID: 4839256761320850588}
@@ -357,28 +356,6 @@ CharacterController:
   m_SkinWidth: 0.001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7182395427365737705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1347493585419430163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6026a86f3964f9c4b8d999bc9ddb581c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  closeEnough: 1
-  waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  tank: {fileID: 0}
-  motor: {fileID: 0}
-  loopType: 0
 --- !u!114 &7878015978449458106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -409,6 +386,7 @@ MonoBehaviour:
   turnSpeed: 3
   damageDone: 0
   motor: {fileID: 0}
+  motorTf: {fileID: 0}
   weaponData: {fileID: 0}
 --- !u!114 &4839256761320850588
 MonoBehaviour:
@@ -1250,6 +1228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98fcc123efe19ae4c82537f23fe8eb10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tf: {fileID: 0}
 --- !u!1 &7860243130614522454
 GameObject:
   m_ObjectHideFlags: 0

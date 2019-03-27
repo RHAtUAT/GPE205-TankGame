@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+//https://opengameart.org/content/synthesized-explosion     - tank_shot[audio]
+//https://Tank-SoundBible.com-1359027625                    - tank_motor[audio] 
+
 public class GameManager : MonoBehaviour
 {
 

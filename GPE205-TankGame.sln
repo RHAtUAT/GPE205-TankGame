@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityWakatime", "UnityWakatime.csproj", "{F5B0CA96-6858-5D42-4C39-D36C8F20932D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{455A1151-D666-2241-AFC3-58E19DD5A62E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{F5B0CA96-6858-5D42-4C39-D36C8F20932D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5B0CA96-6858-5D42-4C39-D36C8F20932D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5B0CA96-6858-5D42-4C39-D36C8F20932D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{455A1151-D666-2241-AFC3-58E19DD5A62E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{455A1151-D666-2241-AFC3-58E19DD5A62E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{455A1151-D666-2241-AFC3-58E19DD5A62E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{455A1151-D666-2241-AFC3-58E19DD5A62E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

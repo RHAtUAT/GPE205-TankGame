@@ -74,13 +74,11 @@
     <Compile Include="Assets\Scripts\Health.cs" />
     <Compile Include="Assets\Scripts\HealthPickup.cs" />
     <Compile Include="Assets\Scripts\Pickup.cs" />
-    <Compile Include="Assets\Scripts\PickupSpeed.cs" />
     <Compile Include="Assets\Scripts\Powerup.cs" />
     <Compile Include="Assets\Scripts\PowerupController.cs" />
     <Compile Include="Assets\Scripts\PowerupSpawner.cs" />
     <Compile Include="Assets\Scripts\Rotate.cs" />
     <Compile Include="Assets\Scripts\Sound.cs" />
-    <Compile Include="Assets\Scripts\SpeedPowerup.cs" />
     <Compile Include="Assets\Scripts\Tank\Chase.cs" />
     <Compile Include="Assets\Scripts\Tank\Pivot.cs" />
     <Compile Include="Assets\Scripts\Tank\Projectile.cs" />

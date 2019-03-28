@@ -22,7 +22,7 @@ public class TankData : MonoBehaviour {
     public GameObject wheelBase;
     private GameObject temp;
 
-    [HideInInspector] public List<MeshRenderer> mr;
+    [HideInInspector] public List<MeshRenderer> wheelRenderers;
     [HideInInspector] public TankMotor motor;
     [HideInInspector] public Transform motorTf;
     [HideInInspector] public WeaponData weaponData;
@@ -40,7 +40,7 @@ public class TankData : MonoBehaviour {
 
         foreach(TankWheel wheel in wheels)
         {
-            mr.AddRange(wheel.GetComponents<MeshRenderer>());
+            wheelRenderers.AddRange(wheel.GetComponents<MeshRenderer>());
         }
     }
 

@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerupController
+public class PowerupController : MonoBehaviour
 {
-    public List<Powerup> powerups;
     public TankData tankData;
-    public WeaponData weaponData;
+    public List<Powerup> powerups;
 
     void Start()
     {
-        powerups = new List<Powerup>();
+        tankData = GetComponent<TankData>();
+        //powerups = new List<Powerup>();
     }
 
     void Update()
@@ -46,8 +46,8 @@ public class PowerupController
         // Run the Activate function of the powerup
         powerup.Activate(tankData);
 
-        // Only add the permanent ones to the list
-        if (!powerup.isPermanent)
+        // Only add the non permanent ones to the list
+        if (powerup.isPermanent)
         {
             powerups.Add(powerup);
         }

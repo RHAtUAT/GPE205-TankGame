@@ -19,7 +19,7 @@ public class InputController : MonoBehaviour
 	{
 		GameManager.instance.player = this;
         Debug.Log("Player: " + GameManager.instance.player.pawn);
-        Debug.Log("Motor: " + pawn.motor);
+        
     }
  
 	// Update is called once per frame

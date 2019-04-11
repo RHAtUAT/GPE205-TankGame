@@ -11,6 +11,7 @@ public class WeaponData : MonoBehaviour
     [Tooltip("Automatically gets the gameObject with the weapon script attached")]
     public Weapon weapon;
     public GameObject turret;
+    public GameObject barrel;
     public GameObject owner;
 
     [Header("Projectile properties")]

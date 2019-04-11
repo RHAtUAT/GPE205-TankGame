@@ -27,7 +27,7 @@ public class TankMotor : MonoBehaviour {
     public void Move(Vector3 direction)
     {
         Vector3 xzOnly = new Vector3(direction.x, 0, direction.z);
-        rb.AddForce(xzOnly * tank.moveSpeed, ForceMode.Acceleration);
+        rb.AddForce(xzOnly * tank.moveSpeed, ForceMode.Force);
         //SimpleMove() will apply Time.deltaTime, and convert to meters per second for us!
         //cc.SimpleMove(direction *= tank.moveSpeed); 
     }

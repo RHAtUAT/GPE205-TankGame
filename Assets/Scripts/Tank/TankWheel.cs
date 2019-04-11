@@ -4,20 +4,10 @@ using UnityEngine;
 
 public class TankWheel : MonoBehaviour
 {
-    private TankData tankData;
-    private MeshRenderer mRenderer;
+    public GameObject gObject;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        mRenderer = GetComponent<MeshRenderer>();
-        tankData = GetComponentInParent<TankData>();
-        tankData.wheelRenderers.Add(mRenderer);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        gObject = GetComponent<GameObject>();
     }
 }

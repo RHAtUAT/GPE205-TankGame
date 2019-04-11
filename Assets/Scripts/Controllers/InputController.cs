@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InputController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class InputController : MonoBehaviour
     private float rotationX;
     private float rotationY;
 
+    public GameObject pawnObject;
     public TankData pawn;
 
     // Use this for initialization
@@ -25,6 +27,10 @@ public class InputController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
+        if(pawn == null)
+        {
+            Instantiate<GameObject>(pawnObject, transform);
+        }
         mouseX = Input.GetAxis("Mouse X");
         mouseY = Input.GetAxis("Mouse Y");
 
@@ -49,7 +55,8 @@ public class InputController : MonoBehaviour
         }
 
         //Move the turret and barrel by the mouse postion
-        pawn.pivot.RotateTurret(rotationX, rotationY);
+        pawn.pivot.Barrel(rotationY);
+        pawn.weaponData.turret.transform.Rotate(0, rotationX, 0);
     }
 
     private void FixedUpdate()

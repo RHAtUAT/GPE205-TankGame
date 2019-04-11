@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//TODO: Replace Destory with explosion effect
-
-public class Health : MonoBehaviour {
+//TODO: Replace Destroy with explosion effect
+public class Health : MonoBehaviour, Damagable {
 
     public int maxHealth = 100;
     public int currentHealth;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 
         currentHealth = maxHealth;
     }
@@ -24,4 +23,10 @@ public class Health : MonoBehaviour {
             Destroy(this.gameObject);
         }
 	}
+
+    public void Damage(int amount)
+    {
+        currentHealth -= amount;
+    }
+
 }

@@ -26,7 +26,7 @@ public class CameraSystem : MonoBehaviour {
     private float rotationY = 0.0f;
     private Transform cam;
     private Quaternion rot;
-    private Vector3 distanceToTarget;
+    public Vector3 distanceToTarget;
     private Vector3 vectorForward;
     private Vector3 vectorToTurret;
 
@@ -34,7 +34,7 @@ public class CameraSystem : MonoBehaviour {
     // Use this for initialization
     void Start () {
         cam = GetComponent<Transform>();
-        distanceToTarget =  target.position - cam.position;
+        distanceToTarget = target.position - cam.position;
         Vector3 rot = cam.localRotation.eulerAngles;
         rotationY = rot.y;
         rotationX = rot.x;
@@ -73,6 +73,13 @@ public class CameraSystem : MonoBehaviour {
         //Rotate the camera every frame so it keeps looking at the target
         cam.LookAt(target);
 
+    }
+
+
+    void MoveToNewPawn()
+    {
+       // In
+       
     }
 
     //Testing for different camera styles

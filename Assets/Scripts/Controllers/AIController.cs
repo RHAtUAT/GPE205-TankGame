@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO: Make barrel pivot on x axis to look at target
+//TODO: Clamp Barrel
+
 public class AIController : MonoBehaviour
 {
     [Header("AI Senses")]
@@ -46,6 +49,7 @@ public class AIController : MonoBehaviour
     public float moveSpeed = 7.0f;
     public float angularSpeed = 50.0f;
     public float turretSpeed = 50.0f;
+    public float barrelSpeed = 5.0f;
 
     [Header("GameObject Data")]
     public TankData pawn;
@@ -331,15 +335,34 @@ public class AIController : MonoBehaviour
 
     void RotateTurret()
     {
-        Vector3 vectorToTarget = target.transform.position - pawn.weaponData.turret.transform.position;
-        Quaternion vectorToQuaternion = Quaternion.LookRotation(vectorToTarget);
+        //MoveTurret
+        Vector3 turretVectorToTarget = target.position - pawn.weaponData.turret.transform.position;
+        turretVectorToTarget.y = 0;
+        Quaternion turretVectorToQuaternion = Quaternion.LookRotation(turretVectorToTarget);
         float step = turretSpeed * Time.deltaTime;
-        pawn.weaponData.turret.transform.rotation = Quaternion.RotateTowards(pawn.weaponData.turret.transform.rotation, vectorToQuaternion, step);
+        pawn.weaponData.turret.transform.rotation = Quaternion.RotateTowards(pawn.weaponData.turret.transform.rotation, turretVectorToQuaternion, step);
+
+        //Movebarrel
+        //If the turret is rotated towards the target
+        if (pawn.weaponData.turret.transform.rotation == turretVectorToQuaternion)
+        {
+
+            //Get the direction from the barrel to the target
+            Vector3 targetDir = target.transform.position - pawn.weaponData.barrel.transform.position;
+            //targetDir.y = barrel.transform.rotation.y;
+
+            //Convert the vector to a quaternion rotation
+            Quaternion rotation = Quaternion.LookRotation(targetDir);
+
+            //Rotate the barrel to look at the target
+            pawn.weaponData.barrel.transform.rotation = Quaternion.Lerp(pawn.weaponData.barrel.transform.rotation, rotation, step);
+
+            Debug.DrawRay(pawn.weaponData.barrel.transform.position, targetDir, Color.blue);
+        }
     }
 
     void Fire()
     {
-        Debug.Log(pawn.weaponData.fireRate);
         pawn.weaponData.Fire();
     }
 
@@ -367,8 +390,8 @@ public class AIController : MonoBehaviour
         bool forwardLeftCast = Physics.Raycast(pawn.motor.transform.position - (quaternionY * vectorToLeftOrigin), pawn.motor.transform.forward, out forwardLeftHit, collisionRaycastLength);
 
         //Display the raycasts (red for right)
-        Debug.DrawRay(pawn.motor.transform.position - (quaternionY * vectorToRightOrigin), pawn.motor.transform.forward * collisionRaycastLength, Color.red);
-        Debug.DrawRay(pawn.motor.transform.position - (quaternionY * vectorToLeftOrigin), pawn.motor.transform.forward * collisionRaycastLength, Color.yellow);
+        //Debug.DrawRay(pawn.motor.transform.position - (quaternionY * vectorToRightOrigin), pawn.motor.transform.forward * collisionRaycastLength, Color.red);
+        //Debug.DrawRay(pawn.motor.transform.position - (quaternionY * vectorToLeftOrigin), pawn.motor.transform.forward * collisionRaycastLength, Color.yellow);
 
         //Return a varible depending on the raycast hit
         if (forwardRightCast && !forwardLeftCast)

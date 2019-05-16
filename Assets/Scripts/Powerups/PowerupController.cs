@@ -1,25 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerupController : MonoBehaviour
 {
     //TODO: Add logwarning if no wheels
-    public int shieldHealth;
-    public int maxHealth;
-    public List<Powerup> powerups;
+    [HideInInspector] public ShieldPowerup shieldPowerup;
     public Dictionary<PickupType, Powerup> activePowerups = new Dictionary<PickupType, Powerup>();
 
     private TankRenderer tankRenderer;
     private TankData tankData;
     private List<Renderer> shieldRenderers;
     private GameObject meshObject;
-    private Health health;
-    private List<GameObject> shieldObjects = new List<GameObject>();
 
     void Start()
     {
-        health = GetComponent<Health>();
         tankData = GetComponent<TankData>();
         tankRenderer = GetComponent<TankRenderer>();
         activePowerups.Add(PickupType.FireRate, null);
@@ -30,56 +24,63 @@ public class PowerupController : MonoBehaviour
 
     void Update()
     {
-        // Create a List to hold our expired powerups
-        List<Powerup> expiredPowerups = new List<Powerup>();
+        if (tankData == null) return;
+        RunPowerups();
+        //foreach (Powerup powerup in activePowerups.Values) powerup.Update(tankData);
+    }
+
+    public void Add(Powerup powerup)
+    {
+        // If there is currently an active powerup of this type, deactivate it
+        if (activePowerups[powerup.type] != null) activePowerups[powerup.type].Deactivate(tankData);
+
+        // Prevent powerups from stacking
+        activePowerups[powerup.type] = null;
+        activePowerups[powerup.type] = powerup;
+        activePowerups[powerup.type].Activate(tankData);
+
+        // Apply all visual modifiers if any
+        if (powerup.visualModifier) ChangeMaterial(tankRenderer, powerup);
+    }
+
+    void RunPowerups()
+    {
+
+        //Create a buffer for the powerups since so we can modify the values while iterating over them 
+        var buffer = new List<Powerup>(activePowerups.Values);
 
         // Loop through all the powers in the List
-        foreach (Powerup powerup in powerups)
+        foreach (Powerup powerup in buffer)
         {
+            // Check to see if there is a stored instance of this powerup
+            if (powerup == null) continue;
+
             // Subtract from the timer
-            powerup.duration -= Time.deltaTime;
+            if (!powerup.isPermanent) { powerup.duration -= Time.deltaTime; }
+
+            if (powerup.type == PickupType.Shield)
+            {
+                shieldPowerup = (ShieldPowerup)powerup;
+
+                if (shieldPowerup.currentHealth <= 0)
+                {
+                    if (shieldPowerup.visualModifier) RestoreMaterial(tankRenderer, shieldPowerup);
+                    shieldPowerup.Deactivate(tankData);
+                    activePowerups[shieldPowerup.type] = null;
+                }
+            }
 
             // Assemble a list of expired powerups
             if (powerup.duration <= 0)
             {
-                expiredPowerups.Add(powerup);
-            }
-        }
-        // Now that we've looked at every powerup in our list, use our list of expired powerups to remove the expired ones.
-        foreach (Powerup powerup in expiredPowerups)
-        {
-            powerup.Deactivate(tankData);
-            if (powerup.visualModifier)
-            {
-                RestoreMaterial(tankRenderer, powerup);
-            }
+                if (powerup.visualModifier)
+                {
+                    RestoreMaterial(tankRenderer, powerup);
+                }
 
-            powerups.Remove(powerup);
-        }
-        // Since our expiredPowerups is local, it will *poof* into nothing when this function ends, 
-        // but let's clear it to learn how to empty an List
-        expiredPowerups.Clear();
-    }
-   
-    public void Add(Powerup powerup)
-    {
-        // Prevent powerups from stacking
-        if (activePowerups[powerup.type] == null)
-        {
-            activePowerups[powerup.type] = powerup;
-            powerup.Activate(tankData);
-        }
-
-        activePowerups[powerup.type].duration = powerup.duration;
-        
-        // Only add the non permanent ones to the list
-        if (!powerup.isPermanent)
-        {
-            powerups.Add(powerup);
-        }
-        if (powerup.visualModifier)
-        {
-            ChangeMaterial(tankRenderer, powerup);
+                powerup.Deactivate(tankData);
+                activePowerups[powerup.type] = null;
+            }
         }
     }
 
@@ -109,7 +110,6 @@ public class PowerupController : MonoBehaviour
                 tankRenderer.wheels.SetMaterial(powerup.mainTexture, powerup.color);
                 break;
         }
-
     }
 
     public void RestoreMaterial(TankRenderer tankRenderer, Powerup powerup)

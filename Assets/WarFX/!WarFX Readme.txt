@@ -1,7 +1,7 @@
-﻿War FX, version 1.8.03
-2018/06/05
-© 2018 - Jean Moreno
-======================
+﻿War FX, version 1.8
+2019/03/20
+© 2019 - Jean Moreno
+====================
 
 PREFABS
 -------
@@ -45,6 +45,9 @@ I'd be happy to see any effects used in your project, so feel free to drop me a 
 
 UPDATE NOTES
 ------------
+1.8.04
+- Removed 'JMOAssets.dll', became obsolete with the Asset Store update notification system
+
 1.8.03
 - fixed small API deprecation (Unity 2017.4+)
 

@@ -1,54 +1,58 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class CameraSystem : MonoBehaviour {
+public class CameraSystem : MonoBehaviour
+{
 
     //TODO: Add First person camera
 
     //Crosshair image
     //https://www.flaticon.com/free-icon/gun-pointer_18554
 
-    public enum CameraType { FirstPerson, ThirdPerson};
+    public enum CameraType { ThirdPerson, FirstPerson };
     public CameraType cameraType;
     public float mouseX;
     public float mouseY;
     public float sensitivityX = 1f;
     public float sensitivityY = 1f;
     public float smoothSpeed = 0.125f;
+    public Player player;
     public Transform target;
-    public Transform turret;
-    public Weapon weapon;
     public Vector3 rotOffset;
     public Vector3 offset;
 
-    private float rotationX = 0.0f;
-    private float rotationY = 0.0f;
+    //private float rotationX = 0.0f;
+    //private float rotationY = 0.0f;
     private Transform cam;
-    private Quaternion rot;
+    //private Quaternion rot;
     public Vector3 distanceToTarget;
     private Vector3 vectorForward;
     private Vector3 vectorToTurret;
 
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
+        distanceToTarget = new Vector3(0, -1.925f, 5.2f);
+        //target = InputController.instance.pawn.pivot.transform;
         cam = GetComponent<Transform>();
-        distanceToTarget = target.position - cam.position;
         Vector3 rot = cam.localRotation.eulerAngles;
-        rotationY = rot.y;
-        rotationX = rot.x;
-        Cursor.lockState = CursorLockMode.Locked;
+        //rotationY = rot.y;
+        //rotationX = rot.x;
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
-
     // Update is called once per frame
-    void LateUpdate () {
-
+    void LateUpdate()
+    {
+        if (player.pawn == null) return;
+        else
+        {
+            if (target == null)
+                target = player.pawn.pivot.transform;
+        }
 
         ThirdPerson();
-
     }
 
     void FirstPerson()
@@ -58,6 +62,7 @@ public class CameraSystem : MonoBehaviour {
 
     void ThirdPerson()
     {
+
         //Get the Y rotation of the object
         Quaternion targetRotationY = Quaternion.Euler(0, target.eulerAngles.y, 0);
 
@@ -72,14 +77,6 @@ public class CameraSystem : MonoBehaviour {
 
         //Rotate the camera every frame so it keeps looking at the target
         cam.LookAt(target);
-
-    }
-
-
-    void MoveToNewPawn()
-    {
-       // In
-       
     }
 
     //Testing for different camera styles

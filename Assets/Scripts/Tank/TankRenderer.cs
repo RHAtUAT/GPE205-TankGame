@@ -1,14 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 
 //generic<dataType> allows us to initialize a derived class that can take any dataType we choose to pass in
+//This would be useful if we wanted to get just the meshes instead of the entire gameObject
 [System.Serializable]
 public abstract class GenericRenderer
 {
-    //[HideInInspector] public List<dataType> renderersList = new List<dataType>();
-    public List<GameObject> gameObjectsList = new List<GameObject>();
+    [HideInInspector] public List<GameObject> gameObjectsList = new List<GameObject>();
     public Dictionary<string, Texture> originalTextures = new Dictionary<string, Texture>();
     public Dictionary<string, Color> originalColors = new Dictionary<string, Color>();
 
@@ -27,7 +26,7 @@ public abstract class GenericRenderer
 
     public void SetMaterial(Texture powerupTexture, Color powerupColor)
     {
-        Debug.Log("SetMaterial");
+        //Debug.Log("SetMaterial");
         gameObjectsList.ForEach((gameObject) =>
         {
             gameObject.GetComponent<Renderer>().material.SetTexture("_MainTex", powerupTexture);
@@ -37,29 +36,25 @@ public abstract class GenericRenderer
 
     public void RestoreMaterial()
     {
-        Debug.Log("RestoreMaterial");
+        //Debug.Log("RestoreMaterial");
         gameObjectsList.ForEach((gameObject) =>
         {
-                gameObject.GetComponent<Renderer>().material.SetTexture("_MainTex", originalTextures[gameObject.name]);
-                gameObject.GetComponent<Renderer>().material.SetColor("_Color", originalColors[gameObject.name]);
+            gameObject.GetComponent<Renderer>().material.SetTexture("_MainTex", originalTextures[gameObject.name]);
+            gameObject.GetComponent<Renderer>().material.SetColor("_Color", originalColors[gameObject.name]);
         });
     }
 
     public void SaveMaterials()
     {
-        Debug.Log("Saving Materials");
+        //Debug.Log("Saving Materials");
         gameObjectsList.ForEach((gameObject) =>
         {
             originalTextures.Add(gameObject.name, gameObject.GetComponent<Renderer>().material.GetTexture("_MainTex"));
             originalColors.Add(gameObject.name, gameObject.GetComponent<Renderer>().material.GetColor("_Color"));
         });
     }
-
-    public void DestroyShield()
-    {
-
-    }
 }
+
 [System.Serializable]
 public class Body : GenericRenderer
 {
@@ -92,7 +87,6 @@ public class Turret : GenericRenderer
     public GameObject hatchDoor;
     public GameObject extra0;
     public GameObject extra1;
-
 
     public override void AddGameObjects()
     {
@@ -137,16 +131,16 @@ public class Tracks : GenericRenderer
 public class Wheels : GenericRenderer
 {
     public GameObject wheelBase;
-    [Tooltip("The TankWheel script retrieves the MeshRender of the GameObject its attached to and adds it to this list automatically")]
-    public List<GameObject> allWheels;
 
+    [Tooltip("The TankWheel script retrieves the GameObject its attached to and adds it to this list automatically")]
+    public List<GameObject> allWheels;
 
     public Wheels()
     {
         allWheels = new List<GameObject>();
     }
 
-    public void addChildObjects(TankWheel[] tankWheels)
+    public void AddChildObjects(TankWheel[] tankWheels)
     {
 
         foreach (TankWheel wheel in tankWheels)
@@ -177,7 +171,7 @@ public class TankRenderer : MonoBehaviour
     void Start()
     {
         TankWheel[] tankWheels = GetComponentsInChildren<TankWheel>();
-        wheels.addChildObjects(tankWheels);
+        wheels.AddChildObjects(tankWheels);
 
         body.AddGameObjects();
         turret.AddGameObjects();

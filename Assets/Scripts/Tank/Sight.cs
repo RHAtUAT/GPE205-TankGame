@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Sight : MonoBehaviour
 {
-     public float fieldOfView;
-     public float viewDistance;
+    public float fieldOfView;
+    public float viewDistance;
 
     [HideInInspector] public Transform target;
     private Transform tf;
@@ -37,11 +35,11 @@ public class Sight : MonoBehaviour
 
         //Draw the right line
         Vector3 rightEndPoint = tf.forward + angleRightToVector;
-        //Debug.DrawLine(tf.position, tf.position + rightEndPoint, Color.red);
+        Debug.DrawLine(tf.position, tf.position + rightEndPoint, Color.red);
 
         //Draw the left line
         Vector3 leftEndPoint = tf.forward + angleLeftToVector;
-        //Debug.DrawLine(tf.position, tf.position + leftEndPoint, Color.red);
+        Debug.DrawLine(tf.position, tf.position + leftEndPoint, Color.red);
 
         //Draw the viewDistance
         //Debug.DrawLine(tf.position, viewDist, Color.green);

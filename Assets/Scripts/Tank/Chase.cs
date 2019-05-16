@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Chase : MonoBehaviour
 {
 
-    public enum AttackMode { Chase, Flee};
+    public enum AttackMode { Chase, Flee };
     public AttackMode attackMode;
     public bool canMove;
     public float fleeDistance = 1.0f;
@@ -22,8 +20,17 @@ public class Chase : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (GameManager.instance.splitScreen == true)
+        {
+            //If player 1 is closer than player2
+            if (Vector3.Distance(tf.position, GameManager.instance.player1.pawn.transform.position) < Vector3.Distance(tf.position, GameManager.instance.player2.pawn.transform.position))
+                target = GameManager.instance.player1.pawn.transform;
+            else
+                target = GameManager.instance.player2.pawn.transform;
+        }
+        else
+            target = GameManager.instance.player1.pawn.transform;
 
-        target = GameManager.instance.player.pawn.transform;
         tank = GetComponent<TankData>();
         motor = GetComponentInChildren<TankMotor>();
         tf = motor.transform;
@@ -32,9 +39,13 @@ public class Chase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        canMove = CanMove(tank.moveSpeed);
+
+        target = SetTarget();
+        if (target = null) return;
+
+        canMove = CanMove(tank.forwardSpeed);
         //Attack
-        if(attackMode == AttackMode.Chase)
+        if (attackMode == AttackMode.Chase)
         {
             if (avoidanceStage != 0)
             {
@@ -49,7 +60,7 @@ public class Chase : MonoBehaviour
         //Flee
         if (attackMode == AttackMode.Flee)
         {
-            if(avoidanceStage != 0)
+            if (avoidanceStage != 0)
             {
                 Avoid();
             }
@@ -57,6 +68,39 @@ public class Chase : MonoBehaviour
             {
                 Flee();
             }
+        }
+    }
+
+    Transform SetTarget()
+    {
+        //Set the AI's new target if it destroys the current one
+        if (GameManager.instance.splitScreen == true)
+        {
+            //If player1 dies player2 becomes the target
+            if (GameManager.instance.player1.pawn == null && GameManager.instance.player2.pawn != null)
+                return GameManager.instance.player2.pawn.transform;
+
+            //If player2 dies player1 becomes the target
+            else if (GameManager.instance.player1.pawn != null && GameManager.instance.player1.pawn == null)
+                return GameManager.instance.player1.pawn.transform;
+
+            //If both die do nothing
+            else if (GameManager.instance.player1.pawn == null && GameManager.instance.player2.pawn == null) return null;
+
+            //If niether are null calculate the target based on distance
+            else
+            {
+                //If player 1 is closer than player2
+                if (Vector3.Distance(tf.position, GameManager.instance.player1.pawn.transform.position) < Vector3.Distance(tf.position, GameManager.instance.player2.pawn.transform.position))
+                    return GameManager.instance.player1.pawn.transform;
+                else
+                    return GameManager.instance.player2.pawn.transform;
+            }
+        }
+        else
+        {
+            if (GameManager.instance.player1.pawn == null) return null;
+            return GameManager.instance.player1.pawn.transform;
         }
     }
 
@@ -69,7 +113,7 @@ public class Chase : MonoBehaviour
         {
             Debug.DrawRay(tf.position, tf.forward, Color.black);
             //And it isn't the player
-            if(!hit.collider.CompareTag("Player"))
+            if (!hit.collider.CompareTag("Player"))
             {
                 //We can't move
                 return false;
@@ -77,8 +121,6 @@ public class Chase : MonoBehaviour
         }
         return true;
     }
-
-
 
     void Flee()
     {
@@ -99,7 +141,7 @@ public class Chase : MonoBehaviour
 
         //Rotate towards the position and move to it
         motor.RotateTowards(fleePositon);
-        motor.Move(tank.transform.forward);
+        motor.Move(tank.transform.forward, tank.forwardSpeed);
     }
 
     void DoChase()
@@ -111,10 +153,10 @@ public class Chase : MonoBehaviour
         //We chose this distance, because that is how far we move in 1 second,
         //This means, we are looking for collisions "one second in the future."
 
-        if (CanMove(tank.moveSpeed))
+        if (CanMove(tank.forwardSpeed))
         {
-           //Move forward
-            motor.Move(tank.transform.forward);
+            //Move forward
+            motor.Move(tank.transform.forward, tank.forwardSpeed);
         }
         else
         {
@@ -126,13 +168,13 @@ public class Chase : MonoBehaviour
     //Avoids obstacles
     void Avoid()
     {
-        if(avoidanceStage == 1)
+        if (avoidanceStage == 1)
         {
             //Rotate Left
             motor.Rotate(-1 * tank.turnSpeed);
 
             //If this gameObject can move forward move to stage 2
-            if (CanMove(tank.moveSpeed))
+            if (CanMove(tank.forwardSpeed))
             {
                 avoidanceStage = 2;
 
@@ -142,16 +184,16 @@ public class Chase : MonoBehaviour
 
             //Otherwise, we'll do this again next turn
         }
-        else if(avoidanceStage == 2)
+        else if (avoidanceStage == 2)
         {
             //If we can move forward, do it
-            if (CanMove(tank.moveSpeed))
+            if (CanMove(tank.forwardSpeed))
             {
                 //Subtract from our time and move
                 exitTime -= Time.deltaTime;
-                motor.Move(tank.transform.forward);
+                motor.Move(tank.transform.forward, tank.forwardSpeed);
 
-                if(exitTime <= 0)
+                if (exitTime <= 0)
                 {
                     avoidanceStage = 0;
                 }

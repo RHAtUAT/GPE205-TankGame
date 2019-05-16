@@ -1,44 +1,45 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-//TODO: Make barrel pivot on x axis to look at target
-//TODO: Clamp Barrel
-
-public class AIController : MonoBehaviour
+/*
+ * TODO: Make barrel pivot on x axis to look at target
+ * TODO: Clamp Barrel
+ * TODO: Optimise, clean up code, move functions to different classes 
+ */
+[RequireComponent(typeof(Stats))]
+public class AIController : Controller
 {
     [Header("AI Senses")]
 
-    //Prevent the gameObject from rotating towards the target while it rotates away from whats blocking it 
     //Fixes stuttering caused by the gameObject constantly trying to rotate between two positions
     private bool turningRight = false;
     private bool turningLeft = false;
-    //Prevents using time as a condition unless it's been set 
     public bool targetInSight;
     public bool canHear;
     public bool searching = false;
+    [HideInInspector] public bool firstSpawn = true;
     public enum CastHit { None, Right, Left, Both };
     public CastHit castHit;
     public Vector3 lastSeenLocation;
 
     [Header("AI Properties")]
-    public float hearingDistance = 2.0f;
+    public float hearingDistance = 14.0f;
     public float sightDistance = 10.0f;
     public float fleeDistance = 10.0f;
     public float chaseDistance = 5.0f;
     public float fieldOfView = 90.0f;
     [Tooltip("How far away the AI can be from something for it to still count")]
-    public float distanceOffset = 3.0f;
-    public float collisionRaycastLength = 2.0f;
-    public Vector3 collisionRaycastPosition = new Vector3(0.7f, 1.0f, -0.1f);
+    public float waypointRadius = 1.0f;
+    public float collisionRaycastLength = 8.0f;
+    public Vector3 collisionRaycastPosition = new Vector3(1.5f, 1.0f, -0.1f);
     public enum PatrolType { Stop, Loop, PingPong, Idle };
     public PatrolType currentPatrolType;
     public enum AttackMode { Chase, Flee, Searching, Idle };
     public AttackMode attackMode;
     public int healthToFlee = 20;
 
-    public float fleeTime = 2.0f;
-    public float searchTime = 5.0f;
+    public float fleeTime = 5.0f;
+    public float searchTime = 4.0f;
 
     public float avoidTime = 1.0f;
     [Header("Pawn Properties")]
@@ -46,13 +47,14 @@ public class AIController : MonoBehaviour
     public int currentHealth;
 
     [Header("Motor Properties")]
-    public float moveSpeed = 7.0f;
+    public float forwardSpeed = 15.0f;
     public float angularSpeed = 50.0f;
     public float turretSpeed = 50.0f;
     public float barrelSpeed = 5.0f;
 
     [Header("GameObject Data")]
     public TankData pawn;
+    public Stats stats;
     public Transform target;
     public Transform[] waypoints;
 
@@ -66,41 +68,92 @@ public class AIController : MonoBehaviour
     private float exitTime;
     private float avoidanceResetTime;
     private Transform tf;
-    private Health health;
     private Sight sight;
 
-    //TODO: Make the AI shoot at the target
-    //TODO: Make the AI's weapon and turret pivot 
-    //TODO: Make an AI that moves slow and instantly kills you it it collides with you
+    void Awake()
+    {
+        stats = GetComponent<Stats>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        tf = pawn.transform;
-        target = GameObject.FindGameObjectWithTag("Player").transform;
-        //target = GameManager.instance.player.pawn.gameObject.transform;
-        // TODO : Find game object with tag shoud be used only as a last resort, consider referencing the GM instead
-        //Debug.Log(GameManager.instance);
-        health = pawn.GetComponent<Health>();
-        currentHealth = maxHealth;
-        sight = pawn.GetComponentInChildren<Sight>();
-        // TODO : Moved static values initialized to start
-        pawn.turnSpeed = angularSpeed;
-        pawn.moveSpeed = moveSpeed;
-        sight.target = target;
+        SetLives(GameManager.instance.AILives);
+        StartCoroutine(UIManagerInitialized());
+        SpawnManager.instance.aIControllers.Add(this);
+    }
+
+    IEnumerator UIManagerInitialized()
+    {
+        yield return new WaitUntil(() => UIManager.instance != null);
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Prevent AIController from updating anything if the game is paused 
+        if (Time.timeScale == 0) return;
+
+        //If the pawn is null and respawning is allowed create a new one    
+        if (pawn == null) return;
+
+
+        //Set all desired values
+        tf = pawn.transform;
+        pawn.stats = stats;
+        currentHealth = maxHealth;
+        sight = pawn.GetComponentInChildren<Sight>();
+        pawn.turnSpeed = angularSpeed;
+        pawn.forwardSpeed = forwardSpeed;
+
+        target = SetTarget();
+        if (target == null) return;
+
         MovementManager();
 
         //Show the values in the inspector
+        sight.target = target;
+        targetInSight = sight.TargetInSight();
+        sight.viewDistance = sightDistance;
         castHit = (CastHit)CanMoveForward();
         canHear = CanHear();
-        targetInSight = sight.TargetInSight();
         sight.fieldOfView = fieldOfView;
-        sight.viewDistance = sightDistance;
+
+
+
+    }
+
+    Transform SetTarget()
+    {
+        //Set the AI's new target if it destroys the current one
+        if (GameManager.instance.splitScreen == true)
+        {
+            //If player1 dies player2 becomes the target
+            if (GameManager.instance.player1.pawn == null && GameManager.instance.player2.pawn != null)
+                return GameManager.instance.player2.pawn.transform;
+
+            //If player2 dies player1 becomes the target
+            else if (GameManager.instance.player1.pawn != null && GameManager.instance.player1.pawn == null)
+                return GameManager.instance.player1.pawn.transform;
+
+            //If both die do nothing
+            else if (GameManager.instance.player1.pawn == null && GameManager.instance.player2.pawn == null) return null;
+
+            //If niether are null calculate the target based on distance
+            else
+            {
+                //If player 1 is closer than player2
+                if (Vector3.Distance(tf.position, GameManager.instance.player1.pawn.transform.position) < Vector3.Distance(tf.position, GameManager.instance.player2.pawn.transform.position))
+                    return GameManager.instance.player1.pawn.transform;
+                else
+                    return GameManager.instance.player2.pawn.transform;
+            }
+        }
+        else
+        {
+            if (GameManager.instance.player1.pawn == null) return null;
+            return GameManager.instance.player1.pawn.transform;
+        }
     }
 
     //Handle movement depending on PatrolSate and AttackMode
@@ -146,7 +199,7 @@ public class AIController : MonoBehaviour
 
             //If the AI's low on health and it's not currently in the flee state
             //set it to the flee State
-            if (health.currentHealth <= healthToFlee && attackMode != AttackMode.Flee)
+            if (currentHealth <= healthToFlee && attackMode != AttackMode.Flee)
                 attackMode = AttackMode.Flee;
 
             //If the AI is searching and it finds the target
@@ -177,7 +230,7 @@ public class AIController : MonoBehaviour
                 searching = false;
                 attackMode = lastAttackMode;
                 currentPatrolType = lastPatrolType;
-                Debug.Log("lost track");
+                //Debug.Log("lost track");
             }
 
             if (attackMode == AttackMode.Searching)
@@ -190,7 +243,7 @@ public class AIController : MonoBehaviour
         }
     }
 
-    //Returns true if the target is within AI hearingDistance
+    //Returns true if the target is within AI hearingDistance 
     public bool CanHear()
     {
         float distance = Vector3.Distance(target.position, tf.position);
@@ -210,12 +263,12 @@ public class AIController : MonoBehaviour
         }
         //Show the vector to the waypoint
 
-        if (currentPatrolType == PatrolType.Stop && currentWaypoint == waypoints.Length && Vector3.Distance(waypoints[currentWaypoint].position, pawn.motor.transform.position) >= distanceOffset)
+        if (currentPatrolType == PatrolType.Stop && currentWaypoint == waypoints.Length && Vector3.Distance(waypoints[currentWaypoint].position, pawn.motor.transform.position) >= waypointRadius)
         {
             MoveToTarget(waypoints[currentWaypoint].position);
             //Debug.Log("currentWaypoint " + currentWaypoint);
             //Debug.Log("Waypoint[] " + waypoints.Length);
-            Debug.DrawLine(pawn.motor.transform.position, waypoints[currentWaypoint].position, Color.blue);
+            //Debug.DrawLine(pawn.motor.transform.position, waypoints[currentWaypoint].position, Color.blue);
 
         }
         else if (currentPatrolType == PatrolType.Idle)
@@ -225,13 +278,13 @@ public class AIController : MonoBehaviour
         }
         else
         {
-            Debug.DrawLine(pawn.motor.transform.position, waypoints[currentWaypoint].position, Color.blue);
+            //Debug.DrawLine(pawn.motor.transform.position, waypoints[currentWaypoint].position, Color.blue);
             MoveToTarget(waypoints[currentWaypoint].position);
         }
         //Move to the Waypoint
 
         //If the AI is not close enough to the Waypoint, return
-        if (Vector3.Distance(waypoints[currentWaypoint].position, tf.position) > distanceOffset) return;
+        if (Vector3.Distance(waypoints[currentWaypoint].position, tf.position) > waypointRadius) return;
 
         //Get the currentPatrolType
         switch (currentPatrolType)
@@ -325,7 +378,7 @@ public class AIController : MonoBehaviour
     void Chase()
     {
         lastAttackMode = attackMode;
-        if (Vector3.Distance(pawn.motor.transform.position, target.transform.position) > chaseDistance )
+        if (Vector3.Distance(pawn.motor.transform.position, target.transform.position) > chaseDistance)
         {
             MoveToTarget(lastSeenLocation);
         }
@@ -390,8 +443,8 @@ public class AIController : MonoBehaviour
         bool forwardLeftCast = Physics.Raycast(pawn.motor.transform.position - (quaternionY * vectorToLeftOrigin), pawn.motor.transform.forward, out forwardLeftHit, collisionRaycastLength);
 
         //Display the raycasts (red for right)
-        //Debug.DrawRay(pawn.motor.transform.position - (quaternionY * vectorToRightOrigin), pawn.motor.transform.forward * collisionRaycastLength, Color.red);
-        //Debug.DrawRay(pawn.motor.transform.position - (quaternionY * vectorToLeftOrigin), pawn.motor.transform.forward * collisionRaycastLength, Color.yellow);
+        Debug.DrawRay(pawn.motor.transform.position - (quaternionY * vectorToRightOrigin), pawn.motor.transform.forward * collisionRaycastLength, Color.red);
+        Debug.DrawRay(pawn.motor.transform.position - (quaternionY * vectorToLeftOrigin), pawn.motor.transform.forward * collisionRaycastLength, Color.yellow);
 
         //Return a varible depending on the raycast hit
         if (forwardRightCast && !forwardLeftCast)
@@ -410,7 +463,7 @@ public class AIController : MonoBehaviour
     void MoveToTarget(Vector3 targetPosition)
     {
         //If AI is close enough to its target
-        if (Vector3.Distance(targetPosition, tf.position) <= distanceOffset) return;
+        if (Vector3.Distance(targetPosition, tf.position) <= waypointRadius) return;
 
         //If there's nothing in front of us  
         if (CanMoveForward() == 0)
@@ -423,7 +476,7 @@ public class AIController : MonoBehaviour
             }
 
             //Move forward
-            pawn.motor.Move(pawn.motor.transform.forward);
+            pawn.motor.Move(pawn.motor.transform.forward, pawn.forwardSpeed);
 
         }
         else if (CanMoveForward() == 1 || turningLeft == true)
@@ -468,7 +521,7 @@ public class AIController : MonoBehaviour
 
         if (timeSet && Time.time >= avoidanceResetTime + avoidTime)
         {
-            Debug.Log("Reset");
+            //Debug.Log("Reset");
             timeSet = false;
             turningLeft = false;
             turningRight = false;

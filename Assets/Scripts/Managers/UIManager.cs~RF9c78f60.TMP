@@ -1,0 +1,188 @@
+﻿using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+//TODO: Fix Horizonal splitscreen UI scaling
+
+public class UIManager : MonoBehaviour
+{
+
+    public static UIManager instance;
+
+    private bool scaledUI = false;
+    private Vector3 UIScale;
+
+    [Range(-1000, 1000)]
+    public float inset;
+
+    [Range(-1000, 1000)]
+    public float size;
+
+    [Range(0, 3)]
+    public int edge;
+
+    //UI elements
+    [Header("UI Elements")]
+    public Canvas gameUI;
+    public TextMeshProUGUI category4Text;     //The 4th column in CategoriesBackground
+
+    [Header("Player 1 UI")]
+    public Image scoreUI1;
+    public OptionsMenu optionsMenu1;
+    public Image player1HealthBackground;
+    public Image player1ShieldHealthBackground;
+    public TextMeshProUGUI player1ScoreText;
+    public TextMeshProUGUI player1KillsText;
+    public TextMeshProUGUI player1DeathsText;
+    public Camera camera1;
+    public RectTransform player1UIScreen;
+    public RectTransform player1SafeArea;
+
+
+    [Header("Player 2 UI")]
+    public Image scoreUI2;
+    public OptionsMenu optionsMenu2;
+    public Image player2HealthBackground;
+    public Image player2ShieldHealthBackground;
+    public TextMeshProUGUI player2ScoreText;
+    public TextMeshProUGUI player2KillsText;
+    public TextMeshProUGUI player2DeathsText;
+    public Camera camera2;
+    public RectTransform player2UIScreen;
+    public RectTransform player2SafeArea;
+
+
+
+    void Awake()
+    {
+
+        if (instance == null)
+        {
+            instance = this;
+            //DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        UIScale = player1SafeArea.transform.localScale;
+
+        SetScreenLayout();
+
+
+        if (GameManager.instance.limitedLives == true)
+        {
+            category4Text.text = "Lives";
+        }
+    }
+
+    public void DeathScreen(Player player)
+    {
+
+    }
+
+    public void SetScreenLayout()
+    {
+        //Toggle Splitscreen Options
+        optionsMenu1.splitScreenOptions.gameObject.SetActive(GameManager.instance.splitScreen);
+        optionsMenu2.splitScreenOptions.gameObject.SetActive(GameManager.instance.splitScreen);
+
+        Debug.Log("player1UISize: " + player1UIScreen.sizeDelta);
+
+
+        float scaledGameUIHeight = (gameUI.pixelRect.height / gameUI.scaleFactor);
+        float scaledGameUIWidth = (gameUI.pixelRect.width / gameUI.scaleFactor);
+
+        if (GameManager.instance.splitScreen == true && scaledUI == false)
+        {
+            player1SafeArea.transform.localScale = new Vector3(player2SafeArea.transform.localScale.x / 2, player2SafeArea.transform.localScale.y / 2, player2SafeArea.transform.localScale.z);
+            player2SafeArea.transform.localScale = new Vector3(player2SafeArea.transform.localScale.x / 2, player2SafeArea.transform.localScale.y / 2, player2SafeArea.transform.localScale.z);
+            scaledUI = true;
+
+        }
+
+        player1UIScreen.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Bottom, scaledGameUIHeight / 2, 0);
+        player1UIScreen.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, scaledGameUIWidth / 2, 0);
+
+        switch (GameManager.instance.cameraConfig)
+        {
+            case CameraConfig.SinglePlayer:
+                camera1.rect = new Rect(0, 0, 1.0f, 1.0f);
+                camera2.gameObject.SetActive(false);
+                break;
+
+            case CameraConfig.SplitScreenV:
+
+                //Set the cameras to half of the screen size vertically
+                camera1.rect = new Rect(0, 0.5f, 1.0f, 0.5f);
+
+                camera2.gameObject.SetActive(true);
+                camera2.rect = new Rect(0, 0, 1.0f, 0.5f);
+
+                //Scale the UI area to half of the screen
+                player1UIScreen.sizeDelta = new Vector2(scaledGameUIWidth, scaledGameUIHeight / 2);
+                player1UIScreen.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 0, scaledGameUIHeight / 2);
+
+
+                //Scale the UI area to half of the screen
+                //player2SafeArea.sizeDelta = new Vector2(scaledGameUIWidth * 2, scaledGameUIHeight);
+                player2UIScreen.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Bottom, 0, scaledGameUIHeight / 2);
+
+                Debug.Log("Canvas Height: " + gameUI.pixelRect.height);
+                Debug.Log("ScaleFactor: " + gameUI.scaleFactor);
+                Debug.Log("ScaledSplitScreen: " + scaledGameUIHeight);
+                break;
+
+            case CameraConfig.SplitScreenH:
+
+                camera1.rect = new Rect(0, 0, 0.5f, 1f);
+
+                camera2.gameObject.SetActive(true);
+                camera2.rect = new Rect(0.5f, 0, 0.5f, 1f);
+
+                //Scale the UI area to half the screen
+                //player1SafeArea.sizeDelta = new Vector2(scaledGameUIWidth, scaledGameUIHeight * 2);
+                player1UIScreen.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0, scaledGameUIWidth / 2);
+
+                //Scale the UI area to half the screen
+                //player2SafeArea.sizeDelta = new Vector2(scaledGameUIWidth, scaledGameUIHeight * 2);
+                player2UIScreen.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Right, 0, scaledGameUIWidth / 2);
+                break;
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (GameManager.instance.player1.pawn != null)
+        {
+
+            //Keep player1's scoreboard updated with the correct values
+            player1ScoreText.text = GameManager.instance.player1.score.ToString();
+            player1KillsText.text = GameManager.instance.player1.kills.ToString();
+
+            if (GameManager.instance.limitedLives == false)
+                player1DeathsText.text = GameManager.instance.player1.deaths.ToString();
+            else
+                player1DeathsText.text = GameManager.instance.player1.lives.ToString();
+        }
+
+        if (GameManager.instance.player2 != null)
+        {
+            //Keep player2's scoreboard updated with the correct values
+            player2ScoreText.text = GameManager.instance.player2.score.ToString();
+            player2KillsText.text = GameManager.instance.player2.kills.ToString();
+
+            if (GameManager.instance.limitedLives == false)
+                player2DeathsText.text = GameManager.instance.player2.deaths.ToString();
+            else
+                player2DeathsText.text = GameManager.instance.player2.lives.ToString();
+        }
+    }
+}

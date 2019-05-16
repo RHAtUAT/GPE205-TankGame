@@ -1,14 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerupSpawner : MonoBehaviour
 {
     public float spawnTime;
-    public float countDown;
     public GameObject powerupPrefab;
     public GameObject spawnedObject;
-    public Transform[] spawnLocations;
+    public List<Transform> spawnLocations = new List<Transform>();
+
+    private float countDown;
 
 
     // Start is called before the first frame update
@@ -21,18 +21,19 @@ public class PowerupSpawner : MonoBehaviour
     void Update()
     {
         //If no powerup has spawned
-        if(spawnedObject == null)
+        if (spawnedObject == null)
         {
             //Start the timer
+            //Debug.Log("Countdown: " + countDown);
             countDown -= Time.time;
 
             //And its time for one to spawn
-            if(countDown <= 0)
+            if (countDown <= 0)
             {
-                if(spawnLocations.Length > 0)
+                if (spawnLocations.Count > 0)
                 {
                     //Spawn a powerup in a random location
-                    int locID = Random.Range(0, spawnLocations.Length);
+                    int locID = Random.Range(0, spawnLocations.Count);
                     spawnedObject = Instantiate<GameObject>(powerupPrefab, spawnLocations[locID].position, spawnLocations[locID].rotation);
 
                     //Reset timer

@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Editor\PickupEditor.cs" />
+    <Compile Include="Assets\Editor\SpawnPointEditor.cs" />
     <Compile Include="Assets\ProCore\Polybrush\Code\Editor\Brush Modes\z_BrushMode.cs" />
     <Compile Include="Assets\ProCore\Polybrush\Code\Editor\Brush Modes\z_BrushModeMesh.cs" />
     <Compile Include="Assets\ProCore\Polybrush\Code\Editor\Brush Modes\z_BrushModePaint.cs" />

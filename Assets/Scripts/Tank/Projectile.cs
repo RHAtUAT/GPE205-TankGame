@@ -9,10 +9,8 @@ public class Projectile : MonoBehaviour
     [HideInInspector] public float despawnTime;
     [HideInInspector] public float velocity;
     [HideInInspector] public int damage;
-    [HideInInspector] public GameObject owner;
+    [HideInInspector] public TankData owner;
     public ParticleSystem impactEffectPrefab;
-    private Health health;
-    private PowerupController powerupController;
 
     // Use this for initialization
     private void Start()
@@ -26,13 +24,26 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Instantiate(impactEffectPrefab, tf.position, Quaternion.Euler(tf.rotation.eulerAngles));
+        gameObject.SetActive(false);
+
         //If the gameObject the projectile hits can take damage
-        Damagable damagable = other.gameObject.GetComponentInParent<Damagable>() == null ? other.gameObject.GetComponentInParent<Damagable>() : other.gameObject.GetComponent<Damagable>();
-        damagable.Damage(damage);
+        Damagable damagable = other.gameObject.GetComponentInParent<Damagable>() == null ? other.gameObject.GetComponent<Damagable>() : other.gameObject.GetComponentInParent<Damagable>();
+
+        //If the gameObject dies add to the players score
+        if (damagable != null)
+        {
+            //Debug.Log("Damage: " + damagable.Damage(damage));
+            int[] stats = damagable.Damage(damage);
+            owner.stats.kills += stats[0];
+            owner.stats.score += stats[1];
+
+        }
     }
 }
 
+
 interface Damagable
 {
-    void Damage(int amount);
+    int[] Damage(int amount);
 }

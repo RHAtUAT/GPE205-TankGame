@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Test : MonoBehaviour
 {
@@ -42,24 +40,6 @@ public class Test : MonoBehaviour
         Vector3 targetPosition = target.transform.position;
         Vector3 turretPosition = transform.position;
 
-        /*This means the target is floating in the air, 2x2 units away.
-        You want the turret to ignore the fact that it is floating and only look at the 2x2 units away. As if the target was at 2,0,2.  Notice that the 0 is the same as the turretPosition. So the target will be at: */
-
-        Vector3 turretTargetPosition = new Vector3(targetPosition.x, turretPosition.y, targetPosition.z);
-
-        /*Now because the turret is already looking in the right direction, you can just use a simple lookAt for the barrel. The barrel and turrets forward direction will always be the same. The difference is that the barrel can move up while the turret won't*/
-
-        //transform.LookAt(turretTargetPosition);
-        //barrel.transform.LookAt(targetPosition);
-
-        /* Because its a barrel you want it to rotate at the end, where it is attached to the turret. So you need to add another empty gameobject in your turret that acts as the pivot point. It will be positioned at local 0,0,0. This gameobject will point its forward direction towards the target, so your barrel will be a child of this object and needs to be attached in the forward direction also. The above two lines of code becomes:*/
-
-        //transform.LookAt(turretTargetPosition);
-        //barrelPivot.transform.LookAt(targetPosition);
-
-
-
-
         //Move Turret
         Vector3 turretVectorToTarget = target.position - (transform.position - positionOffset);
         turretVectorToTarget.y = 0;
@@ -87,12 +67,12 @@ public class Test : MonoBehaviour
             Debug.Log("RotationX " + rotation.x);
 
             //Clamp rotation.x so that the barrel can only go so high and so low
-            float newXRotation = Mathf.Clamp(rotation.x , maxVerticalRotation, minVerticalRotation);
+            float newXRotation = Mathf.Clamp(rotation.x, maxVerticalRotation, minVerticalRotation);
 
             Debug.Log("newXRotation " + newXRotation);
 
             //Create a new Quaternion using the clamped rotation for the x value
-            Quaternion newRotation = Quaternion.Euler(new Vector3( newXRotation, rotation.y, rotation.z));
+            Quaternion newRotation = Quaternion.Euler(new Vector3(newXRotation, rotation.y, rotation.z));
 
             //Rotate the barrel to look at the target
             barrel.transform.rotation = Quaternion.Lerp(barrel.transform.rotation, newRotation, step);

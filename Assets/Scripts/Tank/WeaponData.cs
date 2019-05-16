@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WeaponData : MonoBehaviour
 {
@@ -12,7 +10,7 @@ public class WeaponData : MonoBehaviour
     public Weapon weapon;
     public GameObject turret;
     public GameObject barrel;
-    public GameObject owner;
+    public TankData owner;
 
     [Header("Projectile properties")]
     public int velocity = 25;
@@ -22,8 +20,7 @@ public class WeaponData : MonoBehaviour
     public Projectile projectilePrefab;
     public ParticleSystem muzzleFlashPrefab;
 
-    private new AudioSource audio;
-    private TankData tank;
+    public AudioSource audio;
     private float nextShot;
 
     // Use this for initialization
@@ -31,32 +28,32 @@ public class WeaponData : MonoBehaviour
     {
         audio = GetComponent<AudioSource>();
         weapon = GetComponentInChildren<Weapon>();
-        tank = GetComponent<TankData>();
         nextShot = Time.time;
     }
 
     public void Fire()
     {
-        if(Time.time > nextShot)
+        if (Time.time > nextShot)
         {
-            
+
             //Create the projectile to be fired
             Vector3 spawnLocation = weapon.transform.position + (weapon.transform.forward * positionOffset.y) + (weapon.transform.up * positionOffset.z);
-            Projectile projectile = Instantiate<Projectile>(projectilePrefab, spawnLocation, Quaternion.Euler(weapon.transform.rotation.eulerAngles));
+            Projectile projectile = Instantiate(projectilePrefab, spawnLocation, Quaternion.Euler(weapon.transform.rotation.eulerAngles));
             Instantiate<ParticleSystem>(muzzleFlashPrefab, spawnLocation, Quaternion.Euler(weapon.transform.rotation.eulerAngles));
-            audio.Play();
+
+            AudioManager.instance.Play("tankShot");
 
             //Set the projectiles information
-            projectile.owner = tank.gameObject;
             projectile.despawnTime = despawnTime;
             projectile.velocity = velocity;
             projectile.damage = damage;
+            projectile.owner = owner;
 
 
             //For this method of using a timer, we are storing the next time that an event can occur and checking each frame if it is time for that event to occur.
             //Therefore, we need to calculate the next time the event can occur as soon as the timer is instantiated.
             //Rounds Per Second
-            nextShot = Time.time + 1/fireRate;
+            nextShot = Time.time + 1 / fireRate;
         }
     }
 }

@@ -17,6 +17,23 @@ public class SpawnPoint : MonoBehaviour
 
     private void Start()
     {
+        //if (team == Team.Player)
+        //{
+        //    if (pointType == PointType.Spawn)
+        //        SpawnManager.instance.playerSpawnPoints.Add(this);
+        //    else
+        //        SpawnManager.instance.playerRespawnPoints.Add(this);
+        //}
+        //else if (team == Team.Enemy)
+        //{
+        //    if (pointType == PointType.Spawn)
+        //        SpawnManager.instance.AISpawnPoints.Add(this);
+        //    else
+        //        SpawnManager.instance.AIRespawnPoints.Add(this);
+        //}
+
+
+
         renderers = this.GetComponentsInChildren<Renderer>();
         foreach (Renderer renderer in renderers)
         {

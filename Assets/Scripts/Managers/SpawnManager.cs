@@ -14,6 +14,7 @@ public class SpawnManager : MonoBehaviour
 
     public List<TankData> activeTanks = new List<TankData>();
     public List<AIController> aIControllers;
+    public AIController[] aIControllersArr;
     public List<Player> players;
 
     [Header("Player Spawn Points")]
@@ -54,14 +55,17 @@ public class SpawnManager : MonoBehaviour
         foreach (Player player in players)
         {
             SpawnPlayer(player);
-
         }
+
+        aIControllersArr = GameObject.FindObjectsOfType<AIController>();
+        aIControllers.AddRange(aIControllersArr);
+
+        SpawnAI();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //SpawnAI();
         if (players.Count != 0)
         {
             if (GameManager.instance.splitScreen == true)
@@ -110,9 +114,6 @@ public class SpawnManager : MonoBehaviour
         }
 
         //RespawnAI();
-        //Debug.Log("Running RespawnAI()");
-
-        if (SceneManager.GetActiveScene().name != "Game") return;
     }
 
 
@@ -139,6 +140,8 @@ public class SpawnManager : MonoBehaviour
     public void GetEnemySpawnPoints()
     {
         SpawnPoint[] spawnPoints = GameObject.FindObjectsOfType<SpawnPoint>();
+
+        Debug.Log("AISpawnPoints: " + spawnPoints);
         foreach (SpawnPoint spawnPoint in spawnPoints)
         {
             //Add Spawns
@@ -162,23 +165,26 @@ public class SpawnManager : MonoBehaviour
             return;
         }
 
-        //Check if there are any AI spawn points in the scene
+        //Check if there are no AI spawn points in the scene
         if (AISpawnPoints.Count <= 0)
         {
             Debug.LogWarning("No AI Spawn Points found!");
             return;
         }
-
         //Choose an available spawn/respawn point for the tank
         foreach (AIController aIController in aIControllers)
         {
-
             //Spawn the AI pawn
-            if (aIController.pawn != null && aIController.firstSpawn == true)
+            if (aIController.pawn == null && aIController.firstSpawn == true)
             {
                 //Check for available spawn points
                 AvailableSpawnPoint(AISpawnPoints, availableAISpawnPoints);
-                if (availableAISpawnPoints.Count <= 0) return;
+                if (availableAISpawnPoints.Count <= 0)
+                {
+                    Debug.Log("AvailableSpawnPoints: " + availableAISpawnPoints.Count);
+                    Debug.Log("No Available Spawn Points found!");
+                    return;
+                }
 
                 Debug.Log("Spawning AI");
                 int locationID = Random.Range(0, availableAISpawnPoints.Count);
@@ -226,12 +232,16 @@ public class SpawnManager : MonoBehaviour
             //}
 
             //Respawn the AI pawn
-            if (aIController.pawn != null && GameManager.instance.enableRespawning == true)
+            if (aIController.pawn == null && GameManager.instance.enableRespawning == true)
             {
 
                 //Check for available respawn points
                 AvailableSpawnPoint(AIRespawnPoints, availableAIRespawnPoints);
-                if (availableAIRespawnPoints.Count <= 0) return;
+                if (availableAISpawnPoints.Count <= 0)
+                {
+                    Debug.Log("No Available Spawn Points found!");
+                    return;
+                }
 
                 Debug.Log("Respawning AI");
 
@@ -350,16 +360,15 @@ public class SpawnManager : MonoBehaviour
             foreach (TankData activeTank in activeTanks)
             {
                 if (Vector3.Distance(spawnPoint.transform.position, activeTank.transform.position) > GameManager.instance.inUseRadius)
-                {
                     spawnPoint.available = true;
-                }
+
                 //If a single tank is too close, the spawn point isnt available
                 else
                 {
-                    spawnPoint.available = false;
-
+                    //If the spawn point is unavailable
                     //Break out of the loop and check if the next spawn point is available
-                    break;
+                    spawnPoint.available = false;
+                    //break;
                 }
             }
 
@@ -369,20 +378,18 @@ public class SpawnManager : MonoBehaviour
 
             if (spawnPoint.available == true)
             {
-                //If the list doesn't already contain the available spawn point
-                //May have to change this once multiplayer is working
                 if (!listToPopulate.Contains(spawnPoint))
                 {
+                    //If the list doesn't already contain the available spawn point, Add it
+                    //May have to change this once multiplayer is working
                     Debug.Log("Added");
                     listToPopulate.Add(spawnPoint);
                 }
             }
-
-            //If the spawn point is unavailable
             else
             {
-                Debug.Log("Removed");
                 listToPopulate.Remove(spawnPoint);
+                Debug.Log("Removed");
             }
         }
     }

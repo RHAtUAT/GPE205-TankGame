@@ -19,7 +19,7 @@ public class Player : Controller
 
     void Start()
     {
-        SpawnManager.instance.players.Add(this);
+        //SpawnManager.instance.players.Add(this);
         SetLives(GameManager.instance.playerLives);
     }
 

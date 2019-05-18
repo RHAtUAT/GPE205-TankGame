@@ -105,10 +105,9 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("GamePadName: " + Input.GetJoystickNames()[0]);
         if (Input.GetJoystickNames().Length > 0)
         {
-
+            Debug.Log("GamePadName: " + Input.GetJoystickNames()[0]);
         }
 
 

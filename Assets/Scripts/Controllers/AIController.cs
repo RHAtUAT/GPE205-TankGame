@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
  * TODO: Make barrel pivot on x axis to look at target
@@ -73,20 +72,21 @@ public class AIController : Controller
     void Awake()
     {
         stats = GetComponent<Stats>();
+        //StartCoroutine(UIManagerInitialized());
     }
 
     // Start is called before the first frame update
     void Start()
     {
         SetLives(GameManager.instance.AILives);
-        StartCoroutine(UIManagerInitialized());
-        SpawnManager.instance.aIControllers.Add(this);
+
     }
 
-    IEnumerator UIManagerInitialized()
-    {
-        yield return new WaitUntil(() => UIManager.instance != null);
-    }
+    //IEnumerator UIManagerInitialized()
+    //{
+    //    yield return new WaitUntil(() => SpawnManager.instance != null);
+    //    SpawnManager.instance.aIControllers.Add(this);
+    //}
 
     // Update is called once per frame
     void Update()

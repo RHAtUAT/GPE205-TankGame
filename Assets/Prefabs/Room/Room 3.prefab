@@ -1310,6 +1310,7 @@ GameObject:
   m_Component:
   - component: {fileID: 221536560406567121}
   - component: {fileID: 2620109625560633507}
+  - component: {fileID: 5219428383494337067}
   m_Layer: 0
   m_Name: AIController
   m_TagString: Untagged
@@ -1374,17 +1375,34 @@ MonoBehaviour:
   avoidTime: 1
   maxHealth: 100
   currentHealth: 0
-  moveSpeed: 25
+  forwardSpeed: 15
   angularSpeed: 50
   turretSpeed: 50
   barrelSpeed: 5
   pawn: {fileID: 0}
+  stats: {fileID: 0}
   target: {fileID: 0}
   waypoints:
   - {fileID: 6397407781433964991}
   - {fileID: 2910765226831923841}
   - {fileID: 7410931099825800736}
   - {fileID: 2307180864982037314}
+--- !u!114 &5219428383494337067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5214444290318471328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ead8ff15cf09e34688b445b4e9f7e36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score: 0
+  kills: 0
+  deaths: 0
+  lives: 0
 --- !u!1 &7236891951399108345
 GameObject:
   m_ObjectHideFlags: 0
@@ -1496,6 +1514,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1320352624424055467}
   - component: {fileID: 3578337512431972159}
+  - component: {fileID: 7105181691465240511}
   m_Layer: 0
   m_Name: AIController
   m_TagString: Untagged
@@ -1563,11 +1582,12 @@ MonoBehaviour:
   avoidTime: 1
   maxHealth: 100
   currentHealth: 0
-  moveSpeed: 25
+  forwardSpeed: 15
   angularSpeed: 50
   turretSpeed: 50
   barrelSpeed: 5
   pawn: {fileID: 0}
+  stats: {fileID: 0}
   target: {fileID: 0}
   waypoints:
   - {fileID: 5366962338970769055}
@@ -1577,6 +1597,22 @@ MonoBehaviour:
   - {fileID: 6211723402767445092}
   - {fileID: 8280727473953297579}
   - {fileID: 3175048469839509143}
+--- !u!114 &7105181691465240511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8586344422582862669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ead8ff15cf09e34688b445b4e9f7e36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score: 0
+  kills: 0
+  deaths: 0
+  lives: 0
 --- !u!1001 &385535696740670376
 PrefabInstance:
   m_ObjectHideFlags: 0

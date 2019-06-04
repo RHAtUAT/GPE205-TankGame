@@ -5187,6 +5187,7 @@ GameObject:
   - component: {fileID: 8963905994365688822}
   - component: {fileID: 8572407753326519629}
   - component: {fileID: 1977471759911979172}
+  - component: {fileID: 106674297439211347}
   m_Layer: 0
   m_Name: pz4_I
   m_TagString: Untagged
@@ -5201,8 +5202,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8339656549147913793}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 51.29, y: 0.55, z: 117.94}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2745278731109388411}
@@ -5333,16 +5334,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20018a834f63e1842a1581e0df774867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAlive: 1
   maxHealth: 100
   currentHealth: 0
   damageDone: 0
   score: 0
   kills: 0
   deaths: 0
-  moveSpeed: 25
+  forwardSpeed: 20
+  backwardSpeed: 20
   turnSpeed: 50
   centerOfGravity: {fileID: 4986677784356128046}
-  controller: {fileID: 0}
+  stats: {fileID: 0}
   motor: {fileID: 0}
   motorTf: {fileID: 0}
   weaponData: {fileID: 0}
@@ -5367,13 +5370,12 @@ MonoBehaviour:
   barrel: {fileID: 8561476226919286772}
   owner: {fileID: 8721994460219830444}
   velocity: 25
-  damage: 25
+  damage: 20
   despawnTime: 3
   positionOffset: {x: 0, y: 0, z: 0.5}
   projectilePrefab: {fileID: 114585897459279206, guid: 545756876fe82e94bb164ef152d8f47f,
     type: 3}
   muzzleFlashPrefab: {fileID: 19800014, guid: 5332791ebce075d4a9e56f4581e7fb47, type: 3}
-  audio: {fileID: 0}
 --- !u!114 &8572407753326519629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5434,6 +5436,7 @@ MonoBehaviour:
     duration: 0
     isPermanent: 0
     visualModifier: 0
+    audio: {fileID: 0}
     vehiclePart: 0
     mainTexture: {fileID: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
@@ -5442,6 +5445,22 @@ MonoBehaviour:
     currentHealth: 100
     healthBarsUI: {fileID: 0}
     shieldPrefab: {fileID: 0}
+--- !u!114 &106674297439211347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8339656549147913793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ead8ff15cf09e34688b445b4e9f7e36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score: 0
+  kills: 0
+  deaths: 0
+  lives: 0
 --- !u!1 &8413644251625054158
 GameObject:
   m_ObjectHideFlags: 0

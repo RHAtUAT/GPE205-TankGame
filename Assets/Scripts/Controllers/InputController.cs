@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+using Logger = Assets.Scripts.Utilities.Logger;
 
 public class InputController : MonoBehaviour
 {
+    private static readonly Logger Logger = new Logger("InputController");
+
     public enum Player { _1, _2 }
     public enum InputType { Keyboard, GamePad }
     public InputType inputType;
@@ -27,9 +30,32 @@ public class InputController : MonoBehaviour
         PlayerInput();
     }
 
+    void FixedUpdate()
+    {
+        if (pawn.isAlive == false)
+        {
+            Debug.LogWarning("Fixed");
+            return;
+        }
+        //Move Forwards
+        if (Input.GetKey(KeyCode.W))
+        {
+            pawn.motor.Move(pawn.motorTf.forward, pawn.forwardSpeed);
+            //AudioManager.instance.Play("tankMotor");
+        }
+
+        //Move Backwards
+        if (Input.GetKey(KeyCode.S))
+        {
+            pawn.motor.Move(-pawn.motorTf.forward, pawn.backwardSpeed);
+            //AudioManager.instance.Play("tankMotor");
+        }
+    }
+
     void PlayerInput()
     {
-        if (pawn == null) return;
+        if (pawn.isAlive == false) return;
+
         if (inputType == InputType.Keyboard)
         {
 
@@ -58,22 +84,9 @@ public class InputController : MonoBehaviour
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
             {
                 pawn.motor.Rotate(-pawn.turnSpeed);
-                Debug.Log("A pressed");
             }
 
-            //Move Forwards
-            if (Input.GetKey(KeyCode.W))
-            {
-                pawn.motor.Move(pawn.motorTf.forward, pawn.forwardSpeed);
-                //AudioManager.instance.Play("tankMotor");
-            }
 
-            //Move Backwards
-            if (Input.GetKey(KeyCode.S))
-            {
-                pawn.motor.Move(-pawn.motorTf.forward, pawn.backwardSpeed);
-                //AudioManager.instance.Play("tankMotor");
-            }
 
             //Shoot on left mouse click
             if (Input.GetMouseButtonDown(0))
@@ -131,6 +144,8 @@ public class InputController : MonoBehaviour
                 pawn.weaponData.Fire();
 
             //Move the turret and barrel by the Right Joystick
+            Logger.Debug(pawn.pivot.ToString());
+
             pawn.pivot.Barrel(rotationY);
             pawn.weaponData.turret.transform.Rotate(0, rotationX, 0);
         }

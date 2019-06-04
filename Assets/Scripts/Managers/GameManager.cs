@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Logger = Assets.Scripts.Utilities.Logger;
 
 //TODO: Refine the way stats are displayed
 //TODO: Check for all players dead
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
+    private static readonly Logger Logger = new Logger("GameManager");
 
 
     [Header("Game Settings")]
@@ -78,7 +80,7 @@ public class GameManager : MonoBehaviour
         if (splitScreen == true)
         {
             player2.gameObject.SetActive(true);
-            Debug.Log("ScreenLayout GM: " + PlayerPrefs.GetInt("ScreenLayout", 1));
+            Logger.Info("ScreenLayout GM: " + PlayerPrefs.GetInt("ScreenLayout", 1));
             cameraConfig = (CameraConfig)PlayerPrefs.GetInt("ScreenLayout", 1);
         }
         else
@@ -92,7 +94,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
 
         mapSeed = MainMenu.mapSeed;
-        mapGenerator.GenerateGrid();
+        if (mapGenerator != null)
+            mapGenerator.GenerateGrid();
 
         int screenHeight = Screen.height;
         int screenWidth = Screen.width;
@@ -116,9 +119,9 @@ public class GameManager : MonoBehaviour
             if (player1.pawn != null)
             {
                 //Send player stats to the game manager
-                player1Score = player1.score;
-                player1Kills = player1.kills;
-                player1Deaths = player1.deaths;
+                player1Score = player1.pawn.stats.score;
+                player1Kills = player1.pawn.stats.kills;
+                player1Deaths = player1.pawn.stats.deaths;
             }
         }
 

@@ -422,14 +422,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5152382950140555276}
-  m_LocalRotation: {x: 0, y: 0.51817614, z: -0, w: -0.8552739}
-  m_LocalPosition: {x: -0.001597881, y: 1.477496, z: 0.07638848}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.001597881, y: 1.477496, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8562692942839567420}
   m_Father: {fileID: 8562692942442277998}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: -422.42, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5173761413024924953
 GameObject:
   m_ObjectHideFlags: 0
@@ -1752,6 +1752,7 @@ GameObject:
   - component: {fileID: 1817236450383967979}
   - component: {fileID: 2936405615758881892}
   - component: {fileID: 5215638844126287783}
+  - component: {fileID: 3271257258917376551}
   m_Layer: 0
   m_Name: M4A3E2_1
   m_TagString: Player
@@ -1971,16 +1972,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20018a834f63e1842a1581e0df774867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAlive: 0
   maxHealth: 100
   currentHealth: 0
   damageDone: 0
   score: 0
   kills: 0
   deaths: 0
-  moveSpeed: 25
+  forwardSpeed: 25
+  backwardSpeed: 20
   turnSpeed: 50
   centerOfGravity: {fileID: 8217336952579747668}
-  controller: {fileID: 0}
+  stats: {fileID: 0}
   motor: {fileID: 0}
   motorTf: {fileID: 0}
   weaponData: {fileID: 0}
@@ -2011,7 +2014,6 @@ MonoBehaviour:
   projectilePrefab: {fileID: 114585897459279206, guid: 545756876fe82e94bb164ef152d8f47f,
     type: 3}
   muzzleFlashPrefab: {fileID: 19800014, guid: 5332791ebce075d4a9e56f4581e7fb47, type: 3}
-  audio: {fileID: 0}
 --- !u!114 &2936405615758881892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2029,6 +2031,7 @@ MonoBehaviour:
     duration: 0
     isPermanent: 0
     visualModifier: 0
+    audio: {fileID: 0}
     vehiclePart: 0
     mainTexture: {fileID: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
@@ -2080,6 +2083,22 @@ MonoBehaviour:
     right: {fileID: 8564003303644242846}
     left: {fileID: 8564003303532909946}
   renderedObjects: []
+--- !u!114 &3271257258917376551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8564003303100130526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ead8ff15cf09e34688b445b4e9f7e36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score: 0
+  kills: 0
+  deaths: 0
+  lives: 0
 --- !u!1 &8564003303119676746
 GameObject:
   m_ObjectHideFlags: 0
@@ -3367,7 +3386,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8564003304271370612}
-  m_LocalRotation: {x: -0.6034545, y: 0.36856848, z: 0.36856848, w: 0.6034545}
+  m_LocalRotation: {x: -0.7071023, y: 0.0025298893, z: 0.0025298893, w: 0.7071023}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.30102348, y: 0.30102444, z: 0.30102444}
   m_Children:
@@ -3376,7 +3395,7 @@ Transform:
   - {fileID: 1841188346612365728}
   m_Father: {fileID: 1591832712391931633}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90.00001, y: 0, z: 62.83}
+  m_LocalEulerAnglesHint: {x: -90.00001, y: -62.42, z: 62.83}
 --- !u!33 &8552269133178240168
 MeshFilter:
   m_ObjectHideFlags: 0

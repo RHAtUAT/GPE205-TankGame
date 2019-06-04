@@ -2,8 +2,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-//TODO: Fix Horizonal splitscreen UI scaling
-
+/*TODO: Fix Horizonal splitscreen UI scaling
+ *TODO: Make scoreBar a class
+ *
+ */
 public class UIManager : MonoBehaviour
 {
 
@@ -31,9 +33,12 @@ public class UIManager : MonoBehaviour
     public OptionsMenu optionsMenu1;
     public Image player1HealthBackground;
     public Image player1ShieldHealthBackground;
-    public TextMeshProUGUI player1ScoreText;
-    public TextMeshProUGUI player1KillsText;
-    public TextMeshProUGUI player1DeathsText;
+    public TextMeshProUGUI scoreBar1ScoreText;
+    public TextMeshProUGUI scoreBar1KillsText;
+    public TextMeshProUGUI scoreBar1DeathsText;
+    public TextMeshProUGUI p1ScoreBar2ScoreText;
+    public TextMeshProUGUI p1ScoreBar2KillsText;
+    public TextMeshProUGUI p1ScoreBar2DeathsText;
     public Camera camera1;
     public RectTransform player1UIScreen;
     public RectTransform player1SafeArea;
@@ -44,9 +49,12 @@ public class UIManager : MonoBehaviour
     public OptionsMenu optionsMenu2;
     public Image player2HealthBackground;
     public Image player2ShieldHealthBackground;
-    public TextMeshProUGUI player2ScoreText;
-    public TextMeshProUGUI player2KillsText;
-    public TextMeshProUGUI player2DeathsText;
+    public TextMeshProUGUI p2ScoreBar1ScoreText;
+    public TextMeshProUGUI p2ScoreBar1KillsText;
+    public TextMeshProUGUI p2ScoreBar1DeathsText;
+    public TextMeshProUGUI scoreBar2ScoreText;
+    public TextMeshProUGUI scoreBar2KillsText;
+    public TextMeshProUGUI scoreBar2DeathsText;
     public Camera camera2;
     public RectTransform player2UIScreen;
     public RectTransform player2SafeArea;
@@ -75,7 +83,10 @@ public class UIManager : MonoBehaviour
 
         SetScreenLayout();
 
-
+        if (GameManager.instance.splitScreen == true)
+        {
+            player2UIScreen.gameObject.SetActive(true);
+        }
         if (GameManager.instance.limitedLives == true)
         {
             category4Text.text = "Lives";
@@ -93,7 +104,7 @@ public class UIManager : MonoBehaviour
         optionsMenu1.splitScreenOptions.gameObject.SetActive(GameManager.instance.splitScreen);
         optionsMenu2.splitScreenOptions.gameObject.SetActive(GameManager.instance.splitScreen);
 
-        Debug.Log("player1UISize: " + player1UIScreen.sizeDelta);
+        //Debug.Log("player1UISize: " + player1UIScreen.sizeDelta);
 
 
         float scaledGameUIHeight = (gameUI.pixelRect.height / gameUI.scaleFactor);
@@ -108,8 +119,8 @@ public class UIManager : MonoBehaviour
 
         }
 
-        Debug.Log("ScreenLayout: " + PlayerPrefs.GetInt("ScreenLayout", 0));
-        Debug.Log("Camera Config: " + GameManager.instance.cameraConfig);
+        //Debug.Log("ScreenLayout: " + PlayerPrefs.GetInt("ScreenLayout", 0));
+        //Debug.Log("Camera Config: " + GameManager.instance.cameraConfig);
 
         switch (GameManager.instance.cameraConfig)
         {
@@ -164,25 +175,45 @@ public class UIManager : MonoBehaviour
         {
 
             //Keep player1's scoreboard updated with the correct values
-            player1ScoreText.text = GameManager.instance.player1.score.ToString();
-            player1KillsText.text = GameManager.instance.player1.kills.ToString();
+            scoreBar1ScoreText.text = GameManager.instance.player1.pawn.stats.score.ToString();
+            scoreBar1KillsText.text = GameManager.instance.player1.pawn.stats.kills.ToString();
+
+            p1ScoreBar2ScoreText.text = GameManager.instance.player2.pawn.stats.score.ToString();
+            p1ScoreBar2KillsText.text = GameManager.instance.player2.pawn.stats.kills.ToString();
 
             if (GameManager.instance.limitedLives == false)
-                player1DeathsText.text = GameManager.instance.player1.deaths.ToString();
+            {
+                scoreBar1DeathsText.text = GameManager.instance.player1.pawn.stats.deaths.ToString();
+                p1ScoreBar2DeathsText.text = GameManager.instance.player2.pawn.stats.deaths.ToString();
+            }
             else
-                player1DeathsText.text = GameManager.instance.player1.lives.ToString();
+            {
+                scoreBar1DeathsText.text = GameManager.instance.player1.pawn.stats.lives.ToString();
+                p1ScoreBar2DeathsText.text = GameManager.instance.player2.pawn.stats.lives.ToString();
+
+            }
         }
 
         if (GameManager.instance.player2 != null)
         {
             //Keep player2's scoreboard updated with the correct values
-            player2ScoreText.text = GameManager.instance.player2.score.ToString();
-            player2KillsText.text = GameManager.instance.player2.kills.ToString();
+            scoreBar2ScoreText.text = GameManager.instance.player2.pawn.stats.score.ToString();
+            scoreBar2KillsText.text = GameManager.instance.player2.pawn.stats.kills.ToString();
+
+            p2ScoreBar1ScoreText.text = GameManager.instance.player1.pawn.stats.score.ToString();
+            p2ScoreBar1KillsText.text = GameManager.instance.player1.pawn.stats.kills.ToString();
+
 
             if (GameManager.instance.limitedLives == false)
-                player2DeathsText.text = GameManager.instance.player2.deaths.ToString();
+            {
+                scoreBar2DeathsText.text = GameManager.instance.player2.pawn.stats.deaths.ToString();
+                p2ScoreBar1DeathsText.text = GameManager.instance.player1.pawn.stats.deaths.ToString();
+            }
             else
-                player2DeathsText.text = GameManager.instance.player2.lives.ToString();
+            {
+                scoreBar2DeathsText.text = GameManager.instance.player2.pawn.stats.lives.ToString();
+                p2ScoreBar1DeathsText.text = GameManager.instance.player1.pawn.stats.lives.ToString();
+            }
         }
     }
 }

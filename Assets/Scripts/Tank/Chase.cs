@@ -41,7 +41,7 @@ public class Chase : MonoBehaviour
     {
 
         target = SetTarget();
-        if (target = null) return;
+        if (target == null) return;
 
         canMove = CanMove(tank.forwardSpeed);
         //Attack

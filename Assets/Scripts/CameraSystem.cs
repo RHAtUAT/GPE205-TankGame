@@ -46,6 +46,7 @@ public class CameraSystem : MonoBehaviour
     void LateUpdate()
     {
         if (player.pawn == null) return;
+        if (player.pawn.isAlive == false) return;
         else
         {
             if (target == null)

@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b74c0132cc0ff438a1741d9e3a6e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnTime: 30
+  respawnTime: 30
   powerupPrefab: {fileID: 1661212773345000699, guid: dd37616a46da06b4487af157293ae24f,
     type: 3}
   spawnedObject: {fileID: 0}
@@ -1466,7 +1466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b74c0132cc0ff438a1741d9e3a6e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnTime: 30
+  respawnTime: 30
   powerupPrefab: {fileID: 4614983583144370947, guid: fde01fba6dcdbbb4a927f25beb110d98,
     type: 3}
   spawnedObject: {fileID: 0}
@@ -1520,7 +1520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b74c0132cc0ff438a1741d9e3a6e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnTime: 120
+  respawnTime: 30
   powerupPrefab: {fileID: 7770129891202925436, guid: aca502888e49f4e48a89e547eb52decf,
     type: 3}
   spawnedObject: {fileID: 0}
@@ -1576,7 +1576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b74c0132cc0ff438a1741d9e3a6e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnTime: 120
+  respawnTime: 30
   powerupPrefab: {fileID: 289308714054329277, guid: 33fc15dd17899954e8ac92cd0d0a19ab,
     type: 3}
   spawnedObject: {fileID: 0}
@@ -1596,7 +1596,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7081764490148371015}
   - component: {fileID: 5928623066765995816}
-  - component: {fileID: 2602945244772317452}
   m_Layer: 0
   m_Name: AIController
   m_TagString: Untagged
@@ -1631,11 +1630,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6026a86f3964f9c4b8d999bc9ddb581c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
-  alive: 1
   targetInSight: 0
   canHear: 0
   searching: 0
@@ -1658,7 +1652,7 @@ MonoBehaviour:
   avoidTime: 1
   maxHealth: 100
   currentHealth: 0
-  forwardSpeed: 15
+  forwardSpeed: 20
   angularSpeed: 50
   turretSpeed: 50
   barrelSpeed: 5
@@ -1672,22 +1666,8 @@ MonoBehaviour:
   - {fileID: 8330185654116739157}
   - {fileID: 1372644681859798375}
   - {fileID: 8330266640072975691}
---- !u!114 &2602945244772317452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6977514267358723475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ead8ff15cf09e34688b445b4e9f7e36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
+  tf: {fileID: 0}
+  sight: {fileID: 0}
 --- !u!1 &7753013595581923074
 GameObject:
   m_ObjectHideFlags: 0
@@ -1698,7 +1678,6 @@ GameObject:
   m_Component:
   - component: {fileID: 403241284176410705}
   - component: {fileID: 1463499657968013195}
-  - component: {fileID: 9005563169035573150}
   m_Layer: 0
   m_Name: AIController
   m_TagString: Untagged
@@ -1733,11 +1712,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6026a86f3964f9c4b8d999bc9ddb581c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
-  alive: 1
   targetInSight: 0
   canHear: 0
   searching: 0
@@ -1760,7 +1734,7 @@ MonoBehaviour:
   avoidTime: 1
   maxHealth: 100
   currentHealth: 0
-  forwardSpeed: 15
+  forwardSpeed: 20
   angularSpeed: 50
   turretSpeed: 50
   barrelSpeed: 5
@@ -1774,22 +1748,8 @@ MonoBehaviour:
   - {fileID: 1541553471403823409}
   - {fileID: 792485163053418885}
   - {fileID: 6296020432925863292}
---- !u!114 &9005563169035573150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7753013595581923074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ead8ff15cf09e34688b445b4e9f7e36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
+  tf: {fileID: 0}
+  sight: {fileID: 0}
 --- !u!1001 &386798526493327136
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -96,11 +96,11 @@
     <Compile Include="Assets\Scripts\CameraPosition.cs" />
     <Compile Include="Assets\Scripts\CameraSystem.cs" />
     <Compile Include="Assets\Scripts\Controllers\AIController.cs" />
-    <Compile Include="Assets\Scripts\Controllers\Controller.cs" />
     <Compile Include="Assets\Scripts\Controllers\InputController.cs" />
+    <Compile Include="Assets\Scripts\DeathEvent.cs" />
     <Compile Include="Assets\Scripts\DisableRender.cs" />
+    <Compile Include="Assets\Scripts\DisplayFPS.cs" />
     <Compile Include="Assets\Scripts\Follow.cs" />
-    <Compile Include="Assets\Scripts\GenerateSeed.cs" />
     <Compile Include="Assets\Scripts\HealthBars.cs" />
     <Compile Include="Assets\Scripts\KillZone.cs" />
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
@@ -122,7 +122,6 @@
     <Compile Include="Assets\Scripts\Powerups\PowerupSpawner.cs" />
     <Compile Include="Assets\Scripts\Powerups\ShieldPowerup.cs" />
     <Compile Include="Assets\Scripts\Powerups\SpeedPowerup.cs" />
-    <Compile Include="Assets\Scripts\RespawnPoint.cs" />
     <Compile Include="Assets\Scripts\Seed.cs" />
     <Compile Include="Assets\Scripts\Sound.cs" />
     <Compile Include="Assets\Scripts\SpawnPoint.cs" />
@@ -147,6 +146,7 @@
     <Compile Include="Assets\Scripts\UI\RememberSelection.cs" />
     <Compile Include="Assets\Scripts\UI\SFXVolumeSlider.cs" />
     <Compile Include="Assets\Scripts\UI\TestUI.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Logger.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />

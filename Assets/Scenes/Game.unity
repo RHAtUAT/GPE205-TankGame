@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5753625
 RectTransform:
   m_ObjectHideFlags: 0
@@ -449,7 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b74c0132cc0ff438a1741d9e3a6e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnTime: 5
+  respawnTime: 0
   powerupPrefab: {fileID: 4614983583144370947, guid: fde01fba6dcdbbb4a927f25beb110d98,
     type: 3}
   spawnedObject: {fileID: 0}
@@ -1391,11 +1391,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6026a86f3964f9c4b8d999bc9ddb581c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
-  alive: 1
   targetInSight: 0
   canHear: 0
   searching: 0
@@ -1429,6 +1424,8 @@ MonoBehaviour:
   - {fileID: 947522744}
   - {fileID: 1037457106}
   - {fileID: 856463258}
+  tf: {fileID: 0}
+  sight: {fileID: 0}
 --- !u!4 &256833940
 Transform:
   m_ObjectHideFlags: 0
@@ -2124,7 +2121,6 @@ GameObject:
   m_Component:
   - component: {fileID: 380425305}
   - component: {fileID: 380425304}
-  - component: {fileID: 380425307}
   - component: {fileID: 380425306}
   m_Layer: 0
   m_Name: Player1
@@ -2145,7 +2141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1164e2e5f3fe2b247a6c7af2383ae2c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputType: 1
+  inputType: 0
   player: 0
   firstSpawn: 1
   mouseX: 0
@@ -2181,31 +2177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c0bc770d16f5c34bb77bcd44f396a6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
-  alive: 1
-  stats: {fileID: 380425307}
   inputController: {fileID: 380425304}
-  camera: {fileID: 1059183811}
-  pawn: {fileID: 0}
---- !u!114 &380425307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 380425303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ead8ff15cf09e34688b445b4e9f7e36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
+  pawn: {fileID: 7839596837507318972, guid: ec2c421a0888c1f428fa2026cd34c1f6, type: 3}
 --- !u!1 &409099153
 GameObject:
   m_ObjectHideFlags: 0
@@ -3597,6 +3570,49 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 636702566}
   m_CullTransparentMesh: 0
+--- !u!1 &708030839
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 708030841}
+  - component: {fileID: 708030840}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &708030840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708030839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e46db5861c4b3b0468247eebc68786b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &708030841
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708030839}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 247.53125, y: 85.03125, z: 74.9375}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 21
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &714844850
 GameObject:
   m_ObjectHideFlags: 0
@@ -4318,7 +4334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b74c0132cc0ff438a1741d9e3a6e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnTime: 5
+  respawnTime: 0
   powerupPrefab: {fileID: 289308714054329277, guid: 33fc15dd17899954e8ac92cd0d0a19ab,
     type: 3}
   spawnedObject: {fileID: 0}
@@ -5629,9 +5645,12 @@ MonoBehaviour:
   optionsMenu1: {fileID: 2087252301}
   player1HealthBackground: {fileID: 927659045}
   player1ShieldHealthBackground: {fileID: 1660561871}
-  player1ScoreText: {fileID: 830352679}
-  player1KillsText: {fileID: 1569773397}
-  player1DeathsText: {fileID: 834752221}
+  scoreBar1ScoreText: {fileID: 830352679}
+  scoreBar1KillsText: {fileID: 1569773397}
+  scoreBar1DeathsText: {fileID: 834752221}
+  p1ScoreBar2ScoreText: {fileID: 125575008}
+  p1ScoreBar2KillsText: {fileID: 425017621}
+  p1ScoreBar2DeathsText: {fileID: 939808619}
   camera1: {fileID: 1059183811}
   player1UIScreen: {fileID: 1166032929}
   player1SafeArea: {fileID: 1545411895}
@@ -5639,9 +5658,12 @@ MonoBehaviour:
   optionsMenu2: {fileID: 968112511}
   player2HealthBackground: {fileID: 178260552}
   player2ShieldHealthBackground: {fileID: 80772894}
-  player2ScoreText: {fileID: 1558386451}
-  player2KillsText: {fileID: 268392091}
-  player2DeathsText: {fileID: 636702568}
+  p2ScoreBar1ScoreText: {fileID: 579441485}
+  p2ScoreBar1KillsText: {fileID: 1082837908}
+  p2ScoreBar1DeathsText: {fileID: 2058770834}
+  scoreBar2ScoreText: {fileID: 1558386451}
+  scoreBar2KillsText: {fileID: 268392091}
+  scoreBar2DeathsText: {fileID: 636702568}
   camera2: {fileID: 1758626750}
   player2UIScreen: {fileID: 5753625}
   player2SafeArea: {fileID: 1364980699}
@@ -5741,6 +5763,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeTanks: []
   aIControllers: []
+  aIControllersArr: []
   players: []
   playerSpawnPoints: []
   playerRespawnPoints: []
@@ -5953,11 +5976,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6026a86f3964f9c4b8d999bc9ddb581c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
-  alive: 1
   targetInSight: 0
   canHear: 0
   searching: 0
@@ -5991,6 +6009,8 @@ MonoBehaviour:
   - {fileID: 947522744}
   - {fileID: 1037457106}
   - {fileID: 856463258}
+  tf: {fileID: 0}
+  sight: {fileID: 0}
 --- !u!4 &1235140465
 Transform:
   m_ObjectHideFlags: 0
@@ -7006,7 +7026,7 @@ MonoBehaviour:
   splitScreen: 0
   enableRespawning: 1
   limitedLives: 1
-  playerLives: 3
+  playerLives: 10
   AILives: 10
   inUseRadius: 10
   players: []
@@ -7678,7 +7698,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1562693667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7700,7 +7720,7 @@ MonoBehaviour:
   sensitivityY: 1
   rotationX: 0
   rotationY: 0
-  pawn: {fileID: 0}
+  pawn: {fileID: 7839596837507318972, guid: ec2c421a0888c1f428fa2026cd34c1f6, type: 3}
 --- !u!4 &1562693668
 Transform:
   m_ObjectHideFlags: 0
@@ -7727,15 +7747,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c0bc770d16f5c34bb77bcd44f396a6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
-  alive: 1
-  stats: {fileID: 1562693670}
   inputController: {fileID: 1562693667}
-  camera: {fileID: 1758626750}
-  pawn: {fileID: 0}
+  pawn: {fileID: 7839596837507318972, guid: ec2c421a0888c1f428fa2026cd34c1f6, type: 3}
 --- !u!114 &1562693670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8306,11 +8319,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6026a86f3964f9c4b8d999bc9ddb581c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
-  alive: 1
   targetInSight: 0
   canHear: 0
   searching: 0
@@ -8344,6 +8352,8 @@ MonoBehaviour:
   - {fileID: 947522744}
   - {fileID: 1037457106}
   - {fileID: 856463258}
+  tf: {fileID: 0}
+  sight: {fileID: 0}
 --- !u!4 &1688764763
 Transform:
   m_ObjectHideFlags: 0
@@ -9303,11 +9313,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6026a86f3964f9c4b8d999bc9ddb581c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
-  alive: 1
   targetInSight: 0
   canHear: 0
   searching: 0
@@ -9341,6 +9346,8 @@ MonoBehaviour:
   - {fileID: 947522744}
   - {fileID: 1037457106}
   - {fileID: 856463258}
+  tf: {fileID: 0}
+  sight: {fileID: 0}
 --- !u!4 &1952537610
 Transform:
   m_ObjectHideFlags: 0

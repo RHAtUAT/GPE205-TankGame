@@ -49,7 +49,7 @@ public class PowerupController : MonoBehaviour
         //Create a buffer for the powerups since so we can modify the values while iterating over them 
         var buffer = new List<Powerup>(activePowerups.Values);
 
-        // Loop through all the powers in the List
+        // Loop through all the powerups in the List
         foreach (Powerup powerup in buffer)
         {
             // Check to see if there is a stored instance of this powerup
@@ -58,29 +58,34 @@ public class PowerupController : MonoBehaviour
             // Subtract from the timer
             if (!powerup.isPermanent) { powerup.duration -= Time.deltaTime; }
 
-            if (powerup.type == PickupType.Shield)
-            {
-                shieldPowerup = (ShieldPowerup)powerup;
+            Remove(powerup);
+        }
+    }
 
-                if (shieldPowerup.currentHealth <= 0)
-                {
-                    if (shieldPowerup.visualModifier) RestoreMaterial(tankRenderer, shieldPowerup);
-                    shieldPowerup.Deactivate(tankData);
-                    activePowerups[shieldPowerup.type] = null;
-                }
+    public void Remove(Powerup powerup)
+    {
+        if (powerup.type == PickupType.Shield)
+        {
+            shieldPowerup = (ShieldPowerup)powerup;
+
+            if (shieldPowerup.currentHealth <= 0)
+            {
+                if (shieldPowerup.visualModifier) RestoreMaterial(tankRenderer, shieldPowerup);
+                shieldPowerup.Deactivate(tankData);
+                activePowerups[shieldPowerup.type] = null;
+            }
+        }
+
+        // Assemble a list of expired powerups
+        if (powerup.duration <= 0)
+        {
+            if (powerup.visualModifier)
+            {
+                RestoreMaterial(tankRenderer, powerup);
             }
 
-            // Assemble a list of expired powerups
-            if (powerup.duration <= 0)
-            {
-                if (powerup.visualModifier)
-                {
-                    RestoreMaterial(tankRenderer, powerup);
-                }
-
-                powerup.Deactivate(tankData);
-                activePowerups[powerup.type] = null;
-            }
+            powerup.Deactivate(tankData);
+            activePowerups[powerup.type] = null;
         }
     }
 

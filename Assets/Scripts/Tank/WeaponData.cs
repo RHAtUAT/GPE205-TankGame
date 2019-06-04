@@ -20,13 +20,13 @@ public class WeaponData : MonoBehaviour
     public Projectile projectilePrefab;
     public ParticleSystem muzzleFlashPrefab;
 
-    public AudioSource audio;
+    //public AudioSource audio;
     private float nextShot;
 
     // Use this for initialization
     void Start()
     {
-        audio = GetComponent<AudioSource>();
+        //audio = GetComponent<AudioSource>();
         weapon = GetComponentInChildren<Weapon>();
         nextShot = Time.time;
     }

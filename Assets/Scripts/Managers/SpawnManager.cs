@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -40,12 +41,12 @@ public class SpawnManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
     }
 
     // Start is called before the first frame update
     void Start()
     {
+
         GetPlayerSpawnPoints();
         GetEnemySpawnPoints();
 
@@ -70,41 +71,51 @@ public class SpawnManager : MonoBehaviour
         {
             if (GameManager.instance.splitScreen == true)
             {
-                if (players[0].lives <= 0 && GameManager.instance.limitedLives == true)
+                if (players[0].pawn.stats.lives <= 0 && GameManager.instance.limitedLives == true)
                 {
                     Debug.Log("P1Score: " + GameManager.instance.player1Score);
                     UIManager.instance.DeathScreen(players[0]);
                     SaveManager.instance.SaveScore();
                     Debug.Log("PlayerPrefsP1Score: " + PlayerPrefs.GetInt("Player1Score", 0).ToString());
-                    Cursor.lockState = CursorLockMode.None;
-                    Cursor.visible = true;
+                    //Cursor.lockState = CursorLockMode.None;
+                    //Cursor.visible = true;
+                }
+                else
+                {
+                    if (players[0].pawn.isAlive == false)
+                        RespawnPlayer(players[0]);
                 }
 
-                if (players[1].lives <= 0 && GameManager.instance.limitedLives == true)
+                if (players[1].pawn.stats.lives <= 0 && GameManager.instance.limitedLives == true)
                 {
                     UIManager.instance.DeathScreen(players[1]);
                     SaveManager.instance.SaveScore();
-                    Cursor.lockState = CursorLockMode.None;
-                    Cursor.visible = true;
+                    //Cursor.lockState = CursorLockMode.None;
+                    //Cursor.visible = true;
+                }
+                else
+                {
+                    if (players[1].pawn.isAlive == false)
+                        RespawnPlayer(players[1]);
                 }
 
-                if (players[0].lives <= 0 && players[1].lives <= 0)
+                if (players[0].pawn.stats.lives <= 0 && players[1].pawn.stats.lives <= 0)
                     SceneManager.LoadScene("Game Over");
             }
             else
             {
-                if (players[0].lives <= 0 && GameManager.instance.limitedLives == true)
+                if (players[0].pawn.stats.lives <= 0 && GameManager.instance.limitedLives == true)
                 {
                     Debug.Log("P1Score: " + GameManager.instance.player1Score);
                     SaveManager.instance.SaveScore();
                     Debug.Log("PlayerPrefsP1Score: " + PlayerPrefs.GetInt("Player1Score", 0).ToString());
                     SceneManager.LoadScene("Game Over");
-                    Cursor.lockState = CursorLockMode.None;
-                    Cursor.visible = true;
+                    //Cursor.lockState = CursorLockMode.None;
+                    //Cursor.visible = true;
                 }
                 else
                 {
-                    if (GameManager.instance.player1.pawn == null)
+                    if (GameManager.instance.player1.pawn.isAlive == false)
                     {
                         RespawnPlayer(players[0]);
                         Debug.Log("Respawning Player");
@@ -113,7 +124,7 @@ public class SpawnManager : MonoBehaviour
             }
         }
 
-        //RespawnAI();
+        RespawnAI();
     }
 
 
@@ -141,7 +152,7 @@ public class SpawnManager : MonoBehaviour
     {
         SpawnPoint[] spawnPoints = GameObject.FindObjectsOfType<SpawnPoint>();
 
-        Debug.Log("AISpawnPoints: " + spawnPoints);
+        //Debug.Log("AISpawnPoints: " + spawnPoints);
         foreach (SpawnPoint spawnPoint in spawnPoints)
         {
             //Add Spawns
@@ -178,11 +189,11 @@ public class SpawnManager : MonoBehaviour
             if (aIController.pawn == null && aIController.firstSpawn == true)
             {
                 //Check for available spawn points
+                //Debug.Log("Finding Available AI Spawn Points");
                 AvailableSpawnPoint(AISpawnPoints, availableAISpawnPoints);
                 if (availableAISpawnPoints.Count <= 0)
                 {
-                    Debug.Log("AvailableSpawnPoints: " + availableAISpawnPoints.Count);
-                    Debug.Log("No Available Spawn Points found!");
+                    Debug.LogWarning("No Available AI Spawn Points found!");
                     return;
                 }
 
@@ -190,19 +201,28 @@ public class SpawnManager : MonoBehaviour
                 int locationID = Random.Range(0, availableAISpawnPoints.Count);
 
                 //Disable the AIController script to prevent errors
-                aIController.enabled = false;
+                //aIController.enabled = false;
 
-                //The aIcontroller now controls this pawn
                 aIController.pawn = Instantiate(GameManager.instance.AIPrefab, availableAISpawnPoints[locationID].transform.position, availableAISpawnPoints[locationID].transform.rotation);
-                availableAISpawnPoints.Remove(availableAISpawnPoints[locationID]);
+                //Add turret rotation;
+                aIController.pawn.gameObject.SetActive(true);
+
+                //StartCoroutine(WaitUntilSpawned(aIController));
 
                 //Enable it once it has a new pawn
-                aIController.enabled = true;
                 activeTanks.Add(aIController.pawn);
-
+                aIController.pawn.isAlive = true;
                 aIController.firstSpawn = false;
             }
         }
+    }
+
+    private IEnumerator WaitUntilSpawned(AIController aIController)
+    {
+
+        yield return new WaitUntil(() => aIController.pawn != null);
+
+
     }
 
     void RespawnAI()
@@ -232,14 +252,15 @@ public class SpawnManager : MonoBehaviour
             //}
 
             //Respawn the AI pawn
-            if (aIController.pawn == null && GameManager.instance.enableRespawning == true)
+            if (aIController.pawn != null && aIController.pawn.isAlive == false && GameManager.instance.enableRespawning == true)
             {
 
                 //Check for available respawn points
                 AvailableSpawnPoint(AIRespawnPoints, availableAIRespawnPoints);
-                if (availableAISpawnPoints.Count <= 0)
+
+                if (availableAIRespawnPoints.Count <= 0)
                 {
-                    Debug.Log("No Available Spawn Points found!");
+                    Debug.LogWarning("No Available AI Respawn Points found!");
                     return;
                 }
 
@@ -248,20 +269,23 @@ public class SpawnManager : MonoBehaviour
                 int locationID = Random.Range(0, availableAIRespawnPoints.Count - 1);
 
                 //Disable the AIController script to prevent errors
-                aIController.enabled = false;
+                //aIController.enabled = false;
 
+                aIController.pawn.transform.position = availableAIRespawnPoints[locationID].transform.position;
+                aIController.pawn.motor.transform.rotation = Quaternion.Euler(0, availableAIRespawnPoints[locationID].transform.rotation.y, 0);
+                aIController.pawn.weaponData.turret.transform.rotation = Quaternion.Euler(0, availableAIRespawnPoints[locationID].transform.rotation.y, 0);
+                //Add turret rotation;
 
-                //The aIcontroller now controls this pawn
-                aIController.pawn = Instantiate(GameManager.instance.AIPrefab, availableAIRespawnPoints[locationID].transform.position, availableAIRespawnPoints[locationID].transform.rotation);
+                aIController.pawn.currentHealth = aIController.pawn.maxHealth;
+                aIController.pawn.gameObject.SetActive(true);
 
                 //Enable it once it has a new pawn
                 aIController.enabled = true;
-
+                aIController.pawn.isAlive = true;
                 activeTanks.Add(aIController.pawn);
             }
         }
     }
-
 
     void SpawnPlayer(Player player)
     {
@@ -279,23 +303,34 @@ public class SpawnManager : MonoBehaviour
         }
 
         //Spawn the inputcontroller pawn
-        if (player.pawn == null)
+        if (player.pawn.isAlive == false)
         {
             //Check for available spawn points
             AvailableSpawnPoint(playerSpawnPoints, availablePlayerSpawnPoints);
-            if (availablePlayerSpawnPoints.Count <= 0) return;
+            if (availablePlayerSpawnPoints.Count <= 0)
+            {
+                Debug.LogWarning("No Available Player Spawn Points found!");
+                return;
+            }
 
-            Debug.Log("Spawning Player");
+            //Debug.Log("Spawning Player");
             int locationID = Random.Range(0, availablePlayerSpawnPoints.Count);
 
             //Disable the inputController script to prevent errors
-            player.inputController.enabled = false;
+            //player.inputController.enabled = false;
 
             //The inputController now controls this pawn
-            player.pawn = Instantiate(GameManager.instance.playerPrefab, availablePlayerSpawnPoints[locationID].transform.position, availablePlayerSpawnPoints[locationID].transform.rotation);
-
+            player.pawn = Instantiate(player.pawn,
+                availablePlayerSpawnPoints[locationID].transform.position,
+                availablePlayerSpawnPoints[locationID].transform.rotation);
+            player.pawn.transform.position = availablePlayerSpawnPoints[locationID].transform.position;
+            player.pawn.transform.rotation = availablePlayerSpawnPoints[locationID].transform.rotation;
+            //Turret rotation
+            player.pawn.gameObject.SetActive(true);
+            player.inputController.pawn = player.pawn;
             //Enable it once it has a new pawn
             player.inputController.enabled = true;
+            player.pawn.isAlive = true;
             activeTanks.Add(player.pawn);
         }
     }
@@ -318,34 +353,38 @@ public class SpawnManager : MonoBehaviour
         }
 
         //Respawn the inputcontroller pawn
-        if (player.pawn == null && GameManager.instance.enableRespawning == true)
+        if (player.pawn.isAlive == false && GameManager.instance.enableRespawning == true)
         {
 
             //Check for available respawn points
             AvailableSpawnPoint(playerRespawnPoints, availablePlayerRespawnPoints);
             if (availablePlayerRespawnPoints.Count <= 0) return;
 
-            Debug.Log("Respawning Player");
-
             int locationID = Random.Range(0, availablePlayerRespawnPoints.Count);
-            Debug.Log("Location ID: " + locationID);
 
             //Disable the inputController script to prevent errors
-            player.inputController.enabled = false;
+            //player.inputController.enabled = false;
 
             //The InputController now controls this pawn
-            player.pawn = Instantiate(GameManager.instance.playerPrefab, availablePlayerRespawnPoints[locationID].transform.position, availablePlayerRespawnPoints[locationID].transform.rotation);
+            Debug.Log("Nathan");
+            player.pawn.transform.position = availablePlayerRespawnPoints[locationID].transform.position;
+            player.pawn.motor.transform.rotation = Quaternion.Euler(0, availablePlayerRespawnPoints[locationID].transform.rotation.y, 0);
+            player.pawn.weaponData.turret.transform.rotation = Quaternion.Euler(0, availablePlayerRespawnPoints[locationID].transform.rotation.y, 0);
+
+            player.pawn.currentHealth = player.pawn.maxHealth;
+            player.pawn.gameObject.SetActive(true);
 
             //Enable it once it has a new pawn
             player.inputController.enabled = true;
+            player.pawn.isAlive = true;
             activeTanks.Add(player.pawn);
         }
     }
 
-    //Only populates the list after a player or AI pawn dies
+    //Only populates the respawn list after a player or AI pawn dies
     public void AvailableSpawnPoint(List<SpawnPoint> spawnPoints, List<SpawnPoint> listToPopulate)
     {
-        Debug.Log("Checking for available spawn points");
+        //Debug.Log("Checking for available spawn points");
         foreach (SpawnPoint spawnPoint in spawnPoints)
         {
 
@@ -368,28 +407,26 @@ public class SpawnManager : MonoBehaviour
                     //If the spawn point is unavailable
                     //Break out of the loop and check if the next spawn point is available
                     spawnPoint.available = false;
-                    //break;
+                    break;
                 }
             }
-
-            //Debug.Log("SpawnPoint: " + spawnPoint);
-            //Debug.Log("SpawnPointName: " + spawnPoint.name);
-            //Debug.Log("SpawnPointAvailable: " + spawnPoint.available);
 
             if (spawnPoint.available == true)
             {
                 if (!listToPopulate.Contains(spawnPoint))
                 {
                     //If the list doesn't already contain the available spawn point, Add it
-                    //May have to change this once multiplayer is working
-                    Debug.Log("Added");
                     listToPopulate.Add(spawnPoint);
+                    //Debug.Log("Added available Spawnpoint");
                 }
             }
             else
             {
-                listToPopulate.Remove(spawnPoint);
-                Debug.Log("Removed");
+                if (listToPopulate.Contains(spawnPoint))
+                {
+                    listToPopulate.Remove(spawnPoint);
+                    //Debug.Log("Removed Unavailable Spawnpoint");
+                }
             }
         }
     }

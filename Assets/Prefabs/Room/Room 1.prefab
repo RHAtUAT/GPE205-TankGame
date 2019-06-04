@@ -768,7 +768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b74c0132cc0ff438a1741d9e3a6e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnTime: 60
+  respawnTime: 30
   powerupPrefab: {fileID: 1661212773345000699, guid: dd37616a46da06b4487af157293ae24f,
     type: 3}
   spawnedObject: {fileID: 0}
@@ -1280,7 +1280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b74c0132cc0ff438a1741d9e3a6e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnTime: 60
+  respawnTime: 0
   powerupPrefab: {fileID: 4614983583144370947, guid: fde01fba6dcdbbb4a927f25beb110d98,
     type: 3}
   spawnedObject: {fileID: 0}
@@ -1610,7 +1610,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7834652740599825588}
   - component: {fileID: 6999996042686848660}
-  - component: {fileID: 7814782584985256334}
   m_Layer: 0
   m_Name: AIController
   m_TagString: Untagged
@@ -1645,11 +1644,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6026a86f3964f9c4b8d999bc9ddb581c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
-  alive: 1
   targetInSight: 0
   canHear: 0
   searching: 0
@@ -1672,7 +1666,7 @@ MonoBehaviour:
   avoidTime: 1
   maxHealth: 100
   currentHealth: 0
-  forwardSpeed: 15
+  forwardSpeed: 20
   angularSpeed: 50
   turretSpeed: 50
   barrelSpeed: 5
@@ -1683,22 +1677,8 @@ MonoBehaviour:
   - {fileID: 2145302999365584633}
   - {fileID: 3041152289152751898}
   - {fileID: 8695807839904546860}
---- !u!114 &7814782584985256334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6316172519968613139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ead8ff15cf09e34688b445b4e9f7e36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
+  tf: {fileID: 0}
+  sight: {fileID: 0}
 --- !u!1 &6335483062377457646
 GameObject:
   m_ObjectHideFlags: 0
@@ -2071,7 +2051,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4726719898813368129}
   - component: {fileID: 4146425295539611609}
-  - component: {fileID: 5586489987383117371}
   m_Layer: 0
   m_Name: AIController (1)
   m_TagString: Untagged
@@ -2106,11 +2085,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6026a86f3964f9c4b8d999bc9ddb581c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
-  alive: 1
   targetInSight: 0
   canHear: 0
   searching: 0
@@ -2133,7 +2107,7 @@ MonoBehaviour:
   avoidTime: 1
   maxHealth: 100
   currentHealth: 0
-  forwardSpeed: 15
+  forwardSpeed: 20
   angularSpeed: 50
   turretSpeed: 50
   barrelSpeed: 5
@@ -2144,22 +2118,8 @@ MonoBehaviour:
   - {fileID: 4370572625706939197}
   - {fileID: 8097706205847551816}
   - {fileID: 2299459522219432651}
---- !u!114 &5586489987383117371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7419333982185808906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ead8ff15cf09e34688b445b4e9f7e36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
+  tf: {fileID: 0}
+  sight: {fileID: 0}
 --- !u!1 &7545053318229351392
 GameObject:
   m_ObjectHideFlags: 0
@@ -2330,7 +2290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b74c0132cc0ff438a1741d9e3a6e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnTime: 90
+  respawnTime: 30
   powerupPrefab: {fileID: 289308714054329277, guid: 33fc15dd17899954e8ac92cd0d0a19ab,
     type: 3}
   spawnedObject: {fileID: 0}
@@ -3132,7 +3092,7 @@ PrefabInstance:
     - target: {fileID: 7183598534453779935, guid: 818e4730da3528e4cb9ddbfcf3674f73,
         type: 3}
       propertyPath: m_Name
-      value: PlayerSpawnPoint (2)
+      value: PlayerSpawnPoint
       objectReference: {fileID: 0}
     - target: {fileID: 4631930349872038718, guid: 818e4730da3528e4cb9ddbfcf3674f73,
         type: 3}
@@ -3192,6 +3152,11 @@ PrefabInstance:
     - target: {fileID: 8727988323583329095, guid: 818e4730da3528e4cb9ddbfcf3674f73,
         type: 3}
       propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8727988323583329095, guid: 818e4730da3528e4cb9ddbfcf3674f73,
+        type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8295509236406868874, guid: 818e4730da3528e4cb9ddbfcf3674f73,
@@ -3397,7 +3362,7 @@ PrefabInstance:
     - target: {fileID: 291613422069032081, guid: 9b55ad34f4f279e41857289315ce1e3b,
         type: 3}
       propertyPath: m_Name
-      value: RespawnPoint
+      value: EnemyRespawnPoint
       objectReference: {fileID: 0}
     - target: {fileID: 291613422069032082, guid: 9b55ad34f4f279e41857289315ce1e3b,
         type: 3}
@@ -3458,6 +3423,11 @@ PrefabInstance:
         type: 3}
       propertyPath: team
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314823854564277002, guid: 9b55ad34f4f279e41857289315ce1e3b,
+        type: 3}
+      propertyPath: pointType
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 291613421451988580, guid: 9b55ad34f4f279e41857289315ce1e3b,
         type: 3}

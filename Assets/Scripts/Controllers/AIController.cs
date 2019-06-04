@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts;
+using UnityEngine;
 
 /*
  * TODO: Make barrel pivot on x axis to look at target
  * TODO: Clamp Barrel
  * TODO: Optimise, clean up code, move functions to different classes 
  */
-[RequireComponent(typeof(Stats))]
-public class AIController : Controller
+public class AIController : MonoBehaviour
 {
     [Header("AI Senses")]
 
@@ -66,27 +66,19 @@ public class AIController : Controller
     private float gameTime;
     private float exitTime;
     private float avoidanceResetTime;
-    private Transform tf;
-    private Sight sight;
+    public Transform tf;
+    public Sight sight;
+    DeathEvent deathEvent = new DeathEvent();
 
     void Awake()
     {
-        stats = GetComponent<Stats>();
-        //StartCoroutine(UIManagerInitialized());
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        SetLives(GameManager.instance.AILives);
-
     }
-
-    //IEnumerator UIManagerInitialized()
-    //{
-    //    yield return new WaitUntil(() => SpawnManager.instance != null);
-    //    SpawnManager.instance.aIControllers.Add(this);
-    //}
 
     // Update is called once per frame
     void Update()
@@ -96,18 +88,19 @@ public class AIController : Controller
 
         //If the pawn is null and respawning is allowed create a new one    
         if (pawn == null) return;
+        if (pawn.isAlive == false) return;
 
-
-        //Set all desired values
-        tf = pawn.transform;
-        pawn.stats = stats;
-        currentHealth = maxHealth;
-        sight = pawn.GetComponentInChildren<Sight>();
-        pawn.turnSpeed = angularSpeed;
-        pawn.forwardSpeed = forwardSpeed;
 
         target = SetTarget();
         if (target == null) return;
+
+        //Set all desired values
+        sight = pawn.GetComponentInChildren<Sight>();
+        tf = pawn.transform;
+        pawn.stats = stats;
+        currentHealth = maxHealth;
+        pawn.turnSpeed = angularSpeed;
+        pawn.forwardSpeed = forwardSpeed;
 
         MovementManager();
 
@@ -116,30 +109,27 @@ public class AIController : Controller
         targetInSight = sight.TargetInSight();
         sight.viewDistance = sightDistance;
         castHit = (CastHit)CanMoveForward();
-        canHear = CanHear();
         sight.fieldOfView = fieldOfView;
-
-
-
+        canHear = CanHear();
     }
 
+    //Set the AI's new target if it destroys the current one
     Transform SetTarget()
     {
-        //Set the AI's new target if it destroys the current one
         if (GameManager.instance.splitScreen == true)
         {
             //If player1 dies player2 becomes the target
-            if (GameManager.instance.player1.pawn == null && GameManager.instance.player2.pawn != null)
+            if (GameManager.instance.player1.pawn.isAlive == false && GameManager.instance.player2.pawn != null)
                 return GameManager.instance.player2.pawn.transform;
 
             //If player2 dies player1 becomes the target
-            else if (GameManager.instance.player1.pawn != null && GameManager.instance.player1.pawn == null)
+            else if (GameManager.instance.player1.pawn != null && GameManager.instance.player2.pawn.isAlive == false)
                 return GameManager.instance.player1.pawn.transform;
 
             //If both die do nothing
-            else if (GameManager.instance.player1.pawn == null && GameManager.instance.player2.pawn == null) return null;
+            else if (GameManager.instance.player1.pawn.isAlive == false && GameManager.instance.player2.pawn.isAlive == false) return null;
 
-            //If niether are null calculate the target based on distance
+            //If neither are null calculate the target based on distance
             else
             {
                 //If player 1 is closer than player2
@@ -151,7 +141,7 @@ public class AIController : Controller
         }
         else
         {
-            if (GameManager.instance.player1.pawn == null) return null;
+            if (GameManager.instance.player1.pawn.isAlive == false) return null;
             return GameManager.instance.player1.pawn.transform;
         }
     }
@@ -162,16 +152,14 @@ public class AIController : Controller
         //If the AI sees or hears the target
         if (canHear || targetInSight)
         {
-
             if (targetInSight)
             {
                 RotateTurret();
                 Fire();
             }
             if (canHear)
-            {
                 RotateTurret();
-            }
+
             //Keep track of time
             gameTime = Time.time;
 
@@ -261,14 +249,14 @@ public class AIController : Controller
             Debug.LogWarning("No WayPoints Found");
             return;
         }
-        //Show the vector to the waypoint
 
         if (currentPatrolType == PatrolType.Stop && currentWaypoint == waypoints.Length && Vector3.Distance(waypoints[currentWaypoint].position, pawn.motor.transform.position) >= waypointRadius)
         {
             MoveToTarget(waypoints[currentWaypoint].position);
-            //Debug.Log("currentWaypoint " + currentWaypoint);
-            //Debug.Log("Waypoint[] " + waypoints.Length);
-            //Debug.DrawLine(pawn.motor.transform.position, waypoints[currentWaypoint].position, Color.blue);
+            //Show the vector to the waypoint
+            Debug.Log("currentWaypoint " + currentWaypoint);
+            Debug.Log("Waypoint[] " + waypoints.Length);
+            Debug.DrawLine(pawn.motor.transform.position, waypoints[currentWaypoint].position, Color.blue);
 
         }
         else if (currentPatrolType == PatrolType.Idle)
@@ -281,8 +269,8 @@ public class AIController : Controller
             //Debug.DrawLine(pawn.motor.transform.position, waypoints[currentWaypoint].position, Color.blue);
             MoveToTarget(waypoints[currentWaypoint].position);
         }
-        //Move to the Waypoint
 
+        //Move to the Waypoint
         //If the AI is not close enough to the Waypoint, return
         if (Vector3.Distance(waypoints[currentWaypoint].position, tf.position) > waypointRadius) return;
 
@@ -334,9 +322,6 @@ public class AIController : Controller
                     }
                 }
                 break;
-
-            default:
-                break;
         }
     }
 
@@ -373,7 +358,7 @@ public class AIController : Controller
         //Debug.Log("Searching");
     }
 
-    //Makes AI move towards the targets position
+    //Makes the AI move towards the targets position
     //Simply here for clearer readability in MovementManager
     void Chase()
     {
@@ -422,6 +407,7 @@ public class AIController : Controller
     //Return whether the forward raycasts hit something or not  
     int CanMoveForward()
     {
+
         //Used for collecting data about what the raycasts hit
         RaycastHit forwardRightHit;
         RaycastHit forwardLeftHit;
@@ -449,12 +435,12 @@ public class AIController : Controller
         //Return a varible depending on the raycast hit
         if (forwardRightCast && !forwardLeftCast)
             return (int)CastHit.Right;
-        else if (forwardLeftCast && !forwardRightCast)
+        if (forwardLeftCast && !forwardRightCast)
             return (int)CastHit.Left;
-        else if (forwardRightCast && forwardRightCast)
+        if (forwardRightCast && forwardRightCast)
             return (int)CastHit.Both;
-        else
-            return (int)CastHit.None;
+        //Implicit else
+        return (int)CastHit.None;
 
         //Optional: Prevent raycast from triggering on player
     }

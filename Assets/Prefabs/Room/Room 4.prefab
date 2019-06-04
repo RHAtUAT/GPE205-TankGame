@@ -1312,14 +1312,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4277761003453903037}
   - component: {fileID: 7207253313506515121}
-  - component: {fileID: 1349170753826484945}
   m_Layer: 0
   m_Name: AIController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4277761003453903037
 Transform:
   m_ObjectHideFlags: 0
@@ -1354,11 +1353,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6026a86f3964f9c4b8d999bc9ddb581c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
-  alive: 1
   targetInSight: 0
   canHear: 0
   searching: 0
@@ -1381,7 +1375,7 @@ MonoBehaviour:
   avoidTime: 1
   maxHealth: 100
   currentHealth: 0
-  forwardSpeed: 15
+  forwardSpeed: 20
   angularSpeed: 50
   turretSpeed: 50
   barrelSpeed: 5
@@ -1397,22 +1391,8 @@ MonoBehaviour:
   - {fileID: 5858226984606077107}
   - {fileID: 5981835723871540526}
   - {fileID: 675534884564772891}
---- !u!114 &1349170753826484945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3680658282552999244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ead8ff15cf09e34688b445b4e9f7e36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  score: 0
-  kills: 0
-  deaths: 0
-  lives: 0
+  tf: {fileID: 0}
+  sight: {fileID: 0}
 --- !u!1 &6065451840727298238
 GameObject:
   m_ObjectHideFlags: 0
@@ -1464,7 +1444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b74c0132cc0ff438a1741d9e3a6e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnTime: 30
+  respawnTime: 30
   powerupPrefab: {fileID: 1661212773345000699, guid: dd37616a46da06b4487af157293ae24f,
     type: 3}
   spawnedObject: {fileID: 0}

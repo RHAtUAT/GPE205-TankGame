@@ -11,11 +11,15 @@ public class HealthBars : MonoBehaviour
     public PowerupController powerupController;
     public Player player;
 
+
+
+    void Start()
+    {
+    }
+
     // Update is called once per frame
     void LateUpdate()
     {
-        if (player.pawn == null) return;
-
         powerupController = player.pawn.powerupController;
         currentHealth = player.pawn.currentHealth;
         maxHealth = player.pawn.maxHealth;
@@ -23,7 +27,11 @@ public class HealthBars : MonoBehaviour
         healthBar.fillAmount = (float)currentHealth / (float)maxHealth;
 
         //Prevent errors if there is no powerup controller
-        if (powerupController == null) return;
+        if (powerupController == null)
+        {
+            Debug.LogWarning("Missing PowerupController!");
+            return;
+        }
 
 
         if (powerupController.activePowerups[PickupType.Shield] != null)

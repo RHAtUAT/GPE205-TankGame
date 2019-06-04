@@ -39,7 +39,7 @@ public class AudioManager : MonoBehaviour
 
             else
                 sound.volume *= masterVolume.value;
-            Debug.Log("Volume: " + sound.volume);
+            //Debug.Log("Volume: " + sound.volume);
             sound.source.volume = sound.volume;
             sound.source.pitch = sound.pitch;
             sound.source.loop = sound.loop;

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 //[RequireComponent(typeof(TankMotor))]
 //[RequireComponent(typeof(WeaponData))]
@@ -9,9 +10,15 @@ public class TankData : MonoBehaviour, Damagable
 {
 
     //Vehicle properties
+    public bool isAlive;
     public int maxHealth;
     public int currentHealth;
     public int damageDone;
+
+    public delegate void DeathEvent();
+
+    public event DeathEvent onDeath;
+
     [HideInInspector] public int score = 0;
     [HideInInspector] public int kills = 0;
     [HideInInspector] public int deaths = 0;
@@ -41,12 +48,15 @@ public class TankData : MonoBehaviour, Damagable
         baseForwardSpeed = forwardSpeed;
         baseBackwardSpeed = backwardSpeed;
         baseTurnSpeed = turnSpeed;
+        onDeath = OnDeath;
 
     }
 
     // Use this for initialization
     void Start()
     {
+        stats = GetComponent<Stats>();
+        stats.SetLives(GameManager.instance.playerLives);
         currentHealth = maxHealth;
         powerupController = GetComponent<PowerupController>();
         tankRenderer = GetComponent<TankRenderer>();
@@ -72,11 +82,18 @@ public class TankData : MonoBehaviour, Damagable
                 if (GameManager.instance.limitedLives == true)
                     stats.lives -= 1;
 
-                stats.deaths += 1;
-                SpawnManager.instance.activeTanks.Remove(this);
-                powerupController.enabled = false;
+                //onDeath();
                 gameObject.SetActive(false);
-                Destroy(gameObject);
+                isAlive = false;
+
+                stats.deaths += 1;
+                foreach (KeyValuePair<PickupType, Powerup> activePowerup in powerupController.activePowerups)
+                {
+                    if (activePowerup.Value != null)
+                        powerupController.Remove(activePowerup.Value);
+                }
+                SpawnManager.instance.activeTanks.Remove(this);
+
 
                 //Return 1 kill and 100 score if this tank is dead
                 return new int[] { 1, 100 };
@@ -88,4 +105,14 @@ public class TankData : MonoBehaviour, Damagable
         //Return 0 kills and 0 score if this tank isnt dead
         return new int[] { 0, 0 };
     }
+
+
+    protected virtual void OnDeath()
+    {
+
+
+        //powerupController.enabled = false;
+        //Destroy(gameObject);
+    }
+
 }

@@ -9,7 +9,7 @@ public class Projectile : MonoBehaviour
     [HideInInspector] public float despawnTime;
     [HideInInspector] public float velocity;
     [HideInInspector] public int damage;
-    [HideInInspector] public TankData owner;
+    public TankData owner;
     public ParticleSystem impactEffectPrefab;
 
     // Use this for initialization
@@ -41,7 +41,6 @@ public class Projectile : MonoBehaviour
         }
     }
 }
-
 
 interface Damagable
 {

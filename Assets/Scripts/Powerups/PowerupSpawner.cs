@@ -3,18 +3,29 @@ using UnityEngine;
 
 public class PowerupSpawner : MonoBehaviour
 {
-    public float spawnTime;
+    public float respawnTime;
     public GameObject powerupPrefab;
     public GameObject spawnedObject;
     public List<Transform> spawnLocations = new List<Transform>();
 
-    private float countDown;
+    private float respawnCountDown;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        countDown = spawnTime;
+
+        if (spawnLocations.Count > 0)
+        {
+            //Spawn a powerup in a random location
+            int locID = Random.Range(0, spawnLocations.Count);
+            spawnedObject = Instantiate<GameObject>(powerupPrefab, spawnLocations[locID].position, spawnLocations[locID].rotation);
+
+            //Reset timer
+            respawnCountDown = respawnTime;
+        }
+        else
+            Debug.LogWarning("No Spawn Locations set for PowerupSpawner");
     }
 
     // Update is called once per frame
@@ -24,11 +35,13 @@ public class PowerupSpawner : MonoBehaviour
         if (spawnedObject == null)
         {
             //Start the timer
-            //Debug.Log("Countdown: " + countDown);
-            countDown -= Time.time;
+            //respawnCountDown -= Time.deltaTime;
+            //Debug.Log("RespawnTime: " + respawnTime);
+            //Debug.Log("RespawnCountDown: " + respawnCountDown);
+            //Debug.Log("Time: " + Time.deltaTime);
 
             //And its time for one to spawn
-            if (countDown <= 0)
+            if (respawnCountDown <= 0)
             {
                 if (spawnLocations.Count > 0)
                 {
@@ -37,7 +50,7 @@ public class PowerupSpawner : MonoBehaviour
                     spawnedObject = Instantiate<GameObject>(powerupPrefab, spawnLocations[locID].position, spawnLocations[locID].rotation);
 
                     //Reset timer
-                    countDown = spawnTime;
+                    respawnCountDown = respawnTime;
                 }
                 else
                 {

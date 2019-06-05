@@ -1418,7 +1418,6 @@ MonoBehaviour:
   turretSpeed: 50
   barrelSpeed: 5
   pawn: {fileID: 0}
-  stats: {fileID: 0}
   target: {fileID: 4000011494899475}
   waypoints:
   - {fileID: 947522744}
@@ -6003,7 +6002,6 @@ MonoBehaviour:
   turretSpeed: 50
   barrelSpeed: 5
   pawn: {fileID: 0}
-  stats: {fileID: 0}
   target: {fileID: 0}
   waypoints:
   - {fileID: 947522744}
@@ -8346,7 +8344,6 @@ MonoBehaviour:
   turretSpeed: 50
   barrelSpeed: 5
   pawn: {fileID: 0}
-  stats: {fileID: 0}
   target: {fileID: 0}
   waypoints:
   - {fileID: 947522744}
@@ -9340,7 +9337,6 @@ MonoBehaviour:
   turretSpeed: 50
   barrelSpeed: 5
   pawn: {fileID: 0}
-  stats: {fileID: 0}
   target: {fileID: 0}
   waypoints:
   - {fileID: 947522744}

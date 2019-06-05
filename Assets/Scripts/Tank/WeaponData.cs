@@ -24,7 +24,7 @@ public class WeaponData : MonoBehaviour
     private float nextShot;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         //audio = GetComponent<AudioSource>();
         weapon = GetComponentInChildren<Weapon>();

@@ -12,7 +12,6 @@ public class Projectile : MonoBehaviour
     public TankData owner;
     public ParticleSystem impactEffectPrefab;
 
-    // Use this for initialization
     private void Start()
     {
         tf = GetComponent<Transform>();

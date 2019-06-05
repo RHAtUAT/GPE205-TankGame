@@ -178,23 +178,28 @@ public class UIManager : MonoBehaviour
             scoreBar1ScoreText.text = GameManager.instance.player1.pawn.stats.score.ToString();
             scoreBar1KillsText.text = GameManager.instance.player1.pawn.stats.kills.ToString();
 
-            p1ScoreBar2ScoreText.text = GameManager.instance.player2.pawn.stats.score.ToString();
-            p1ScoreBar2KillsText.text = GameManager.instance.player2.pawn.stats.kills.ToString();
+            if (GameManager.instance.splitScreen == true)
+            {
+                p1ScoreBar2ScoreText.text = GameManager.instance.player2.pawn.stats.score.ToString();
+                p1ScoreBar2KillsText.text = GameManager.instance.player2.pawn.stats.kills.ToString();
+            }
 
             if (GameManager.instance.limitedLives == false)
             {
                 scoreBar1DeathsText.text = GameManager.instance.player1.pawn.stats.deaths.ToString();
-                p1ScoreBar2DeathsText.text = GameManager.instance.player2.pawn.stats.deaths.ToString();
+                if (GameManager.instance.splitScreen == true)
+                    p1ScoreBar2DeathsText.text = GameManager.instance.player2.pawn.stats.deaths.ToString();
             }
             else
             {
                 scoreBar1DeathsText.text = GameManager.instance.player1.pawn.stats.lives.ToString();
-                p1ScoreBar2DeathsText.text = GameManager.instance.player2.pawn.stats.lives.ToString();
+                if (GameManager.instance.splitScreen == true)
+                    p1ScoreBar2DeathsText.text = GameManager.instance.player2.pawn.stats.lives.ToString();
 
             }
         }
 
-        if (GameManager.instance.player2 != null)
+        if (GameManager.instance.player2 != null && GameManager.instance.splitScreen == true)
         {
             //Keep player2's scoreboard updated with the correct values
             scoreBar2ScoreText.text = GameManager.instance.player2.pawn.stats.score.ToString();

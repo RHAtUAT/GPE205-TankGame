@@ -28,25 +28,25 @@ public class Pickup : MonoBehaviour
         {
             case PickupType.Speed:
                 if (speedPowerup.audio != null)
-                    AudioSource.PlayClipAtPoint(speedPowerup.audio, tf.position, AudioManager.instance.SFXVolume.value);
+                    AudioSource.PlayClipAtPoint(speedPowerup.audio, tf.position, PlayerPrefs.GetFloat("SFXVolume", 1));
                 powerupController.Add(speedPowerup);
                 break;
 
             case PickupType.FireRate:
                 if (fireRatePowerup.audio != null)
-                    AudioSource.PlayClipAtPoint(fireRatePowerup.audio, tf.position, AudioManager.instance.SFXVolume.value);
+                    AudioSource.PlayClipAtPoint(fireRatePowerup.audio, tf.position, PlayerPrefs.GetFloat("SFXVolume", 1));
                 powerupController.Add(fireRatePowerup);
                 break;
 
             case PickupType.Health:
                 if (healPowerup.audio != null)
-                    AudioSource.PlayClipAtPoint(healPowerup.audio, tf.position, AudioManager.instance.SFXVolume.value);
+                    AudioSource.PlayClipAtPoint(healPowerup.audio, tf.position, PlayerPrefs.GetFloat("SFXVolume", 1));
                 powerupController.Add(healPowerup);
                 break;
 
             case PickupType.Shield:
                 if (shieldPowerup.audio != null)
-                    AudioSource.PlayClipAtPoint(shieldPowerup.audio, tf.position, AudioManager.instance.SFXVolume.value);
+                    AudioSource.PlayClipAtPoint(shieldPowerup.audio, tf.position, PlayerPrefs.GetFloat("SFXVolume", 1));
                 powerupController.Add(shieldPowerup);
                 break;
         }

@@ -5187,7 +5187,7 @@ GameObject:
   - component: {fileID: 8963905994365688822}
   - component: {fileID: 8572407753326519629}
   - component: {fileID: 1977471759911979172}
-  - component: {fileID: 106674297439211347}
+  - component: {fileID: 6548365917309612093}
   m_Layer: 0
   m_Name: pz4_I
   m_TagString: Untagged
@@ -5445,7 +5445,7 @@ MonoBehaviour:
     currentHealth: 100
     healthBarsUI: {fileID: 0}
     shieldPrefab: {fileID: 0}
---- !u!114 &106674297439211347
+--- !u!114 &6548365917309612093
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

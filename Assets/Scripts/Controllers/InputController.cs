@@ -21,6 +21,7 @@ public class InputController : MonoBehaviour
 
     void Start()
     {
+
     }
 
 
@@ -32,9 +33,9 @@ public class InputController : MonoBehaviour
 
     void FixedUpdate()
     {
+
         if (pawn.isAlive == false)
         {
-            Debug.LogWarning("Fixed");
             return;
         }
         //Move Forwards
@@ -54,6 +55,8 @@ public class InputController : MonoBehaviour
 
     void PlayerInput()
     {
+        if (pawn == null) return;
+
         if (pawn.isAlive == false) return;
 
         if (inputType == InputType.Keyboard)
@@ -94,6 +97,7 @@ public class InputController : MonoBehaviour
 
             //Move the turret and barrel by the mouse postion
             pawn.pivot.Barrel(rotationY);
+
             pawn.weaponData.turret.transform.Rotate(0, rotationX, 0);
         }
 

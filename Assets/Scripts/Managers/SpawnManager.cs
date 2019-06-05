@@ -53,10 +53,9 @@ public class SpawnManager : MonoBehaviour
         players.Add(GameManager.instance.player1);
         players.Add(GameManager.instance.player2);
 
-        foreach (Player player in players)
-        {
-            SpawnPlayer(player);
-        }
+        SpawnPlayer(players[0]);
+        if (GameManager.instance.splitScreen == true)
+            SpawnPlayer(players[1]);
 
         aIControllersArr = GameObject.FindObjectsOfType<AIController>();
         aIControllers.AddRange(aIControllersArr);
@@ -212,6 +211,8 @@ public class SpawnManager : MonoBehaviour
                 //Enable it once it has a new pawn
                 activeTanks.Add(aIController.pawn);
                 aIController.pawn.isAlive = true;
+                aIController.tf = aIController.pawn.transform;
+
                 aIController.firstSpawn = false;
             }
         }
@@ -323,13 +324,10 @@ public class SpawnManager : MonoBehaviour
             player.pawn = Instantiate(player.pawn,
                 availablePlayerSpawnPoints[locationID].transform.position,
                 availablePlayerSpawnPoints[locationID].transform.rotation);
-            player.pawn.transform.position = availablePlayerSpawnPoints[locationID].transform.position;
-            player.pawn.transform.rotation = availablePlayerSpawnPoints[locationID].transform.rotation;
-            //Turret rotation
+
             player.pawn.gameObject.SetActive(true);
             player.inputController.pawn = player.pawn;
             //Enable it once it has a new pawn
-            player.inputController.enabled = true;
             player.pawn.isAlive = true;
             activeTanks.Add(player.pawn);
         }
@@ -366,7 +364,7 @@ public class SpawnManager : MonoBehaviour
             //player.inputController.enabled = false;
 
             //The InputController now controls this pawn
-            Debug.Log("Nathan");
+
             player.pawn.transform.position = availablePlayerRespawnPoints[locationID].transform.position;
             player.pawn.motor.transform.rotation = Quaternion.Euler(0, availablePlayerRespawnPoints[locationID].transform.rotation.y, 0);
             player.pawn.weaponData.turret.transform.rotation = Quaternion.Euler(0, availablePlayerRespawnPoints[locationID].transform.rotation.y, 0);

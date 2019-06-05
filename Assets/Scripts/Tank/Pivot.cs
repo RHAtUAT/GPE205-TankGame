@@ -8,11 +8,10 @@ public class Pivot : MonoBehaviour
     private float totalVerticalRotation;
     Vector3 offset;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         totalVerticalRotation = 0;
-        tf = GetComponent<Transform>();
+        tf = gameObject.GetComponent<Transform>();
     }
 
     public void Barrel(float inputY)
@@ -25,6 +24,7 @@ public class Pivot : MonoBehaviour
 
         //What the rotation will be after it gets rotated by the function below
         totalVerticalRotation = newRot;
+
 
         tf.Rotate(delta, 0, 0);
     }

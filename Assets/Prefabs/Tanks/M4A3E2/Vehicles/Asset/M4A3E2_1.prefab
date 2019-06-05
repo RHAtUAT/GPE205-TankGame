@@ -209,6 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eb4086d745926b4496677ac5d9bceaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tf: {fileID: 1841188346612365728}
   maxVerticalRotation: 30
   minVerticalRotation: -20
 --- !u!114 &8564437055146183875
@@ -1987,7 +1988,7 @@ MonoBehaviour:
   motor: {fileID: 0}
   motorTf: {fileID: 0}
   weaponData: {fileID: 0}
-  pivot: {fileID: 0}
+  pivot: {fileID: 5522998143438166169}
   tankRenderer: {fileID: 0}
   powerupController: {fileID: 0}
 --- !u!114 &1817236450383967979

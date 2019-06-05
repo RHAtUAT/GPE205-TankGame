@@ -50,11 +50,6 @@ public class TankData : MonoBehaviour, Damagable
         baseTurnSpeed = turnSpeed;
         onDeath = OnDeath;
 
-    }
-
-    // Use this for initialization
-    void Start()
-    {
         stats = GetComponent<Stats>();
         stats.SetLives(GameManager.instance.playerLives);
         currentHealth = maxHealth;
@@ -67,7 +62,6 @@ public class TankData : MonoBehaviour, Damagable
         motorTf = this.gameObject.transform.GetChild(0).GetChild(0).transform;
         rb.centerOfMass = centerOfGravity.localPosition;
     }
-
 
     //Return a kill and 100 score to the tank that killed this one
     public int[] Damage(int amount)

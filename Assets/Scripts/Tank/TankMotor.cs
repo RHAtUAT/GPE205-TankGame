@@ -8,14 +8,19 @@ public class TankMotor : MonoBehaviour
     [HideInInspector] public Transform tf;
     private TankData tank;
 
-    // Use this for initialization
-    void Start()
+    void Awake()
     {
-
         tank = GetComponentInParent<TankData>();
         tf = GetComponent<Transform>();
         //cc = GetComponentInParent<CharacterController>();
         rb = GetComponentInParent<Rigidbody>();
+
+    }
+
+    // Use this for initialization
+    void Start()
+    {
+
     }
 
     public void Move(Vector3 direction, float speed)

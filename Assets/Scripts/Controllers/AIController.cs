@@ -53,7 +53,6 @@ public class AIController : MonoBehaviour
 
     [Header("GameObject Data")]
     public TankData pawn;
-    public Stats stats;
     public Transform target;
     public Transform[] waypoints;
 
@@ -90,14 +89,13 @@ public class AIController : MonoBehaviour
         if (pawn == null) return;
         if (pawn.isAlive == false) return;
 
-
+        if (tf == null) return;
         target = SetTarget();
         if (target == null) return;
 
         //Set all desired values
         sight = pawn.GetComponentInChildren<Sight>();
-        tf = pawn.transform;
-        pawn.stats = stats;
+        //pawn.stats = stats;
         currentHealth = maxHealth;
         pawn.turnSpeed = angularSpeed;
         pawn.forwardSpeed = forwardSpeed;

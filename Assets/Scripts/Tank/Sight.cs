@@ -8,11 +8,17 @@ public class Sight : MonoBehaviour
     [HideInInspector] public Transform target;
     private Transform tf;
 
+
+    void Awake()
+    {
+        tf = GetComponent<Transform>();
+
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        //target = GameManager.instance.player.pawn.transform;
-        tf = GetComponent<Transform>();
+
     }
 
     public bool TargetInSight()

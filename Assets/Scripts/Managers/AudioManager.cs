@@ -32,13 +32,13 @@ public class AudioManager : MonoBehaviour
 
 
             if (sound.type == SoundType.Music)
-                sound.volume *= PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("musicVolume", 1);
+                sound.volume = PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("musicVolume", 1);
 
             else if (sound.type == SoundType.SoundEffect)
-                sound.volume *= PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("SFXVolume", 1);
+                sound.volume = PlayerPrefs.GetFloat("masterVolume", 1) * PlayerPrefs.GetFloat("SFXVolume", 1);
 
             else
-                sound.volume *= masterVolume.value;
+                sound.volume = masterVolume.value;
             //Debug.Log("Volume: " + sound.volume);
             sound.source.volume = sound.volume;
             sound.source.pitch = sound.pitch;
